@@ -1,0 +1,25 @@
+/* CSS Document */
+
+
+div#abc.ui-grid-b .ui-block-a {
+        height: auto;
+        width: 20%;
+        font-weight: bold;
+        text-align: center;
+}
+div#abc.ui-grid-b .ui-block-b {
+        height: auto;
+        width: 60%;
+        font-weight: bold;
+        color:#808080;
+        text-align: center;
+}
+div#abc.ui-grid-b .ui-block-c {
+        height: auto;
+        width: 20%;
+        font-weight: bold;
+        text-align: center;
+}
+p{
+        font-size: 16.3px;
+}

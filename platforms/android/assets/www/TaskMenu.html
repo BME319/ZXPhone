@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="css/jquery.mobile-1.4.2.css">
+    <link type="text/css" rel="stylesheet" href="css/TaskMenu.css">
+    <link rel="stylesheet" href="css/CommonStyle.css">
+    
+    <script src="jquery-mobile/jquery.js"></script>
+    <script src="jquery-mobile/jquery.mobile-1.4.2.js"></script>
+    
+    <script type="text/javascript" src="js/CommonUtility.js"></script>
+    <script type="text/javascript" src="js/TaskMenu.js"></script>
+    <title>任务一览</title>
+    
+</head>
+
+<body>
+    <div>
+    	<div data-role="header"  data-position="fixed">
+            <div id="imgtest-round" style="margin-left:10px;width:40px;height:40px;border-radius:100px;border:2px solid #fff;overflow:hidden;-webkit-box-shadow:0 0 3px #ccc;box-shadow:0 0 3px #ccc;" onclick="$('#Info').panel('open')">
+                <img id="PatientPhoto" style="width:100%;min-height:100%; text-align:center;" alt="头像" />
+            </div>
+<!-- 	<div class="ui-btn-right">
+            <a id="Refresh" href="#" data-role="button" data-icon="refresh" data-iconpos="notext" onClick="window.location.reload(); ">Refresh</a>
+        </div>-->
+                <div class="ui-btn-right">
+          <div style="float:left;">
+<a id="" href="#" data-role="button" data-icon="bullets" data-iconpos="notext" onClick="location.href='Risk.html?'; ">Refresh</a>          </div>
+          <div style="float:right;">
+<a id="Refresh" href="#" data-role="button" data-icon="refresh" data-iconpos="notext" onClick="window.location.reload(); ">Refresh</a>          </div>
+        </div>
+         	<h2 style="margin-top:-40px" id="PatientName"></h2>
+        <div data-role="panel" id="TaskSelect" data-position="right" data-display="overlay" data-theme="a" class="ui-panel ui-panel-position-right ui-panel-display-overlay ui-body-a ui-panel-animate ui-panel-open">
+            <div class="ui-panel-inner">
+            	<button onclick = "RefreshTaskList(0)" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-star">
+                	未完成任务
+                </button>
+                <button onclick = "RefreshTaskList(1)" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-star">
+                	已完成任务
+                </button>
+                <button onclick = "RefreshTaskList(2)" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-star">
+                	全部任务
+                </button>
+                <!--<a href="#" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-b ui-icon-check ui-btn-icon-left ui-btn-inline">确认</a>
+                <a href="#" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left ui-btn-inline">取消</a>-->
+            </div>
+        </div>
+   </div>
+        <div id="abc" class="ui-grid-b" data-role="content">
+             <div class="ui-block-a">
+             	<button onclick="javascript:location.href='calendar.html'" class="ui-btn ui-shadow ui-corner-all ui-icon-calendar ui-btn-icon-notext ui-btn-b ui-btn-inline">查看依从率</button>
+             </div>
+             <div class="ui-block-b"><p id="DateTimebyNow">yyyy-mm-dd weekday</p>
+             </div>
+             <div class="ui-block-c">
+             	<a href="#TaskSelect" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext ui-btn ui-btn-inline">筛选任务</a>
+             </div>
+        </div>
+        <div data-role="panel" id="Info" data-position="left" data-display="overlay" data-theme="a" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-a ui-panel-animate ui-panel-open">
+            <div class="ui-panel-inner">
+            	<button onclick = "javascript: window.location.href='BasicInfo.html'" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-user">
+                	个人信息
+                </button>
+                <button onclick = "" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-cloud">
+                	账号绑定
+                </button>
+                <button onclick = "" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-edit">
+                	修改密码
+                </button>
+                <button onclick = "" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-gear">
+                	设置
+                </button>
+                <button onclick = "" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-info">
+                	关于
+                </button>
+                <button onclick = "BacktoLogOn()" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-action">
+                	退出
+                </button>
+            </div>
+        </div>
+        <ul id="TaskList" data-role="listview" data-split-icon="check" data-split-theme="a" data-inset="true">
+            <li><a onclick="javascript:location.href='HealthEducation.html'" style="background-color:#94D5FA">
+                <img src="img/HealthEducation.png">
+            <h2>健康教育</h2>
+            <p>点击观看教学视频</p></a>
+                <a href="#" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-btn-icon-notext ui-icon-edit ui-btn-a" style="background-color:#FFFFFF"></a>
+            </li>
+        </ul>
+        <div data-role="popup" id="TaskDone" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+            <h3>任务完成确认</h3>
+        	<p>您确定已经完成该项任务吗？</p>
+            <a href="#" data-rel="back" onclick = "UpdateStatus()" class="ui-shadow ui-btn ui-corner-all ui-btn-b ui-icon-check ui-btn-icon-left ui-btn-inline ui-mini">确认</a>
+            <a href="#" data-rel="back" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini">取消</a>
+        </div>
+    </div>
+    <div data-role="footer" data-id="foo1" data-position="fixed">
+        <div data-role="navbar">
+            <ul>
+                <li>
+                    <a href="#" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-star ui-btn-active">
+                        任务
+                    </a>
+                </li>
+                <li onclick="javascript:location.href='Target.html'">
+                	<a href="#" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-heart">
+                    	目标
+                    </a>
+                </li>
+                <li onclick="javascript:location.href='SMS.html'">
+                	<a href="#" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-comment">
+                    	交流
+                    </a>
+                </li>
+            </ul>
+        </div><!-- /navbar -->
+	</div>
+</body>
+
+<script type="text/javascript">
+  	var _PatientId = window.localStorage.getItem("ID");
+	var _UserId = window.localStorage.getItem("ID");
+	var _TerminalName = "Y-PHONE";
+	var _TerminalIP = window.localStorage.getItem("TerminalIP");
+	var Device = window.localStorage.getItem("Device");
+	var _DeviceType = (Device == "Phone")?1:0;
+	var _PlanNo;
+	var _Date;
+	var _Id;
+
+	$(document).ready(function (){
+		//if(window.localStorage.getItem("GetInfoFlag") == null){
+			GetModule(_PatientId);
+			GetPlanInfo(_PatientId);
+			GetPatientName(_PatientId);
+			GetPatientPhoto(_PatientId);
+			//window.localStorage.setItem("GetInfoFlag","Yes");
+		//}
+		_PlanNo = window.localStorage.getItem("PlanNo");
+		$("#PatientName").html(window.localStorage.getItem("PatientName"));
+		$("#PatientPhoto").attr("src", window.localStorage.getItem("PatientPhoto"));
+		GetDateTimebyNow();
+		GetTaskListbyStatus(2);
+	})
+</script>
+</html>

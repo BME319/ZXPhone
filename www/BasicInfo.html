@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+   
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <meta name="apple-mobile-web-app-capable" content="yes">
+   <meta name="apple-mobile-web-app-status-bar-style" content="black">
+   <link rel="stylesheet" href="css/jquery.mobile-1.4.2.css" />
+   <link rel="stylesheet" href="css/CommonStyle.css">
+   <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+   <script src="jquery-mobile/jquery-2.1.3.js"></script>
+   <script src="jquery-mobile/jquery.mobile-1.4.2.js"></script>
+   <script type="text/javascript" src="js/CommonUtility.js"></script>
+   <script type="text/javascript" src="js/BasicInfo.js"></script>
+
+   <style type="text/css">
+  	div#TileDiv.ui-grid-b .ui-block-a { width: 0%} 
+	div#TileDiv.ui-grid-b .ui-block-b { width: 100%} 
+	div#TileDiv.ui-grid-b .ui-block-c { width: 0%}
+	
+	div#BasicInfoDiv.ui-grid-b .ui-block-a { width: 5%} 
+	div#BasicInfoDiv.ui-grid-b .ui-block-b { width: 90%; text-align: center;} 
+	div#BasicInfoDiv.ui-grid-b .ui-block-c { width: 5%}
+	
+	div#DetailInfoDiv.ui-grid-b .ui-block-a { width: 5%} 
+	div#DetailInfoDiv.ui-grid-b .ui-block-b { width: 90%; text-align: left;} 
+	div#DetailInfoDiv.ui-grid-b .ui-block-c { width: 5%}
+   </style>
+
+</head>
+
+<body>
+  <div data-role="page" id="MainPage">  
+    <!--<div data-role="navbar" >
+      <div class="ui-grid-b" id="TileDiv">
+        <div class="ui-block-a"></div>
+        <div class="ui-block-b"><a data-role="button" data-transition="slidefade" data-theme="a" href="BasicInfoPage.html"> 患者个人信息 </a><br>
+        </div>
+        <div class="ui-block-c"></div>
+       </div>
+    </div>-->
+    <div data-role="header" style="height:40px;">
+            <h1>个人信息设置</h1>
+                <a href="javascript: window.history.back(-1);" data-icon="back" data-iconpos="notext" data-shadow="false"
+                data-iconshadow="false">返回</a>
+        
+    </div>
+    <br />
+
+    <div class="ui-grid-b" id="BasicInfoDiv">
+      <div class="ui-block-a"></div>
+      <div class="ui-block-b">
+        <div>
+          <a href="#UploadPhoto" data-rel="dialog">
+            <img id="Photo" name="Photo" style="height:100px; width:100px" />
+          </a>
+        </div>
+        <div>
+          <label for="UserId" id="UserId"></label>
+          <label for="UserName" id="UserName"></label>
+        </div>
+      </div>
+    </div>
+    
+    <div class="ui-grid-b" id="DetailInfoDiv">
+      <div class="ui-block-a"></div>
+      <div class="ui-block-b">  
+        <div data-role="content">
+          <div data-role="collapsible">
+            <h1>基本信息</h1>
+            <p>
+              <div data-role="fieldcontain">
+                <table>
+                  <tr>
+                    <td>
+                      <label for="SexType" style="width:80px">*性别</label>
+                    </td>
+                    <td width="300px">
+                      <select name="SexType" id="SexType" style="height:40px"></select>
+                   </td>
+                  </tr>
+                </table> 
+              </div>
+              <div>
+                <label for="AlertSex" id="AlertSex" style="color:red">性别必填</label>
+              </div>
+              <div data-role="fieldcontain">
+                <table>
+                  <tr>
+                    <td>
+                      <label for="Birthday" style="width:80px">*出生日期</label>
+                    </td>
+                    <td width="300px">
+                      <input type="date" name="Birthday" id="Birthday" style="height:40px">
+                    </td>
+                  </tr>
+                </table>     
+              </div>
+              <div>
+                <label for="AlertBirth" id="AlertBirth" style="color:red">生日必填</label>
+              </div>
+              <div data-role="fieldcontain">
+                <table>
+                  <tr>
+                    <td>
+                      <label for="InsuranceType" style="width:80px">医保类型</label>
+                    </td>
+                    <td width="300px">
+                      <select name="InsuranceType" id="InsuranceType" style="height:40px"></select>
+                    </td>
+                  </tr>
+                </table> 
+              </div>
+            </p>
+          </div>
+        </div>
+        <div data-role="content">
+          <label for="AlertBasicInfo" id="AlertBasicInfo" style="color:red">请完善基本信息</label>
+        </div>
+        
+        <div data-role="content">
+          <div data-role="collapsible">
+            <h1>体征信息</h1>
+            <p>
+              <div data-role="fieldcontain">
+                <table>
+                  <tr>
+                    <td>            
+                      <label for="AboBloodType" style="width:80px">血型</label>
+                    </td>
+                    <td width="300px">
+                      <select name="AboBloodType" size="1" id="AboBloodType" style="height:40px"></select>
+                    </td>
+                  </tr>
+                </table> 
+              </div>
+              <div data-role="fieldcontain">
+                <table>
+                  <tr>
+                    <td>
+                      <label for="Height" style="width:80px">身高(cm)</label>
+                    </td>
+                    <td width="300px">
+                      <input type="text" name="Height" id="Height" style="height:40px">
+                    </td>
+                  </tr>
+                </table> 
+              </div>
+              <div>
+                <label for="AlertHeight" id="AlertHeight" style="color:red">身高必须为正数</label>
+              </div>
+              <div data-role="fieldcontain">
+                <table>
+                  <tr>
+                    <td>
+                      <label for="Weight" style="width:80px">体重(kg)</label>
+                    </td>
+                    <td width="300px">
+                      <input type="text" name="Weight" id="Weight" style="height:40px">
+                    </td>
+                  </tr>
+                </table> 
+              </div>
+              <div>
+                <label for="AlertWeight" id="AlertWeight" style="color:red">体重必须为正数</label>
+              </div>
+            </p>
+          </div>
+        </div>
+        <div data-role="content">
+          <label for="AlertVitalInfo" id="AlertVitalInfo" style="color:red">体征信息格式不正确</label>
+        </div>
+        
+        <div data-role="content">
+          <div data-role="collapsible">
+            <h1>身份信息</h1>
+            <p>
+              <div data-role="fieldcontain">
+                <table>
+                  <tr>
+                    <td>
+                      <label for="IDNo" style="width:120px">身份证号码</label>
+                    </td>
+                    <td width="300px">
+                      <input type="text" name="IDNo" id="IDNo" style="height:40px">
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div>
+                <label for="AlertID" id="AlertID" style="color:red">身份证号码必须为15位或18位</label>
+              </div>
+              <div data-role="fieldcontain">
+                <table>
+                  <tr>
+                    <td>
+                      <label for="Nationality" style="width:120px">国籍</label>
+                    </td>
+                    <td width="300px">
+                      <input type="text" name="Nationality" id="Nationality" style="height:40px">
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div data-role="fieldcontain">
+                <table>
+                  <tr>
+                    <td>
+                      <label for="Occupation" style="width:120px">职业</label>
+                    </td>
+                    <td width="300px">
+                      <input type="text" name="Occupation" id="Occupation" style="height:40px">
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </p>
+          </div>
+        </div>
+        <div data-role="content">
+          <label for="AlertIDInfo" id="AlertIDInfo" style="color:red">身份信息格式不正确</label>
+        </div>
+        
+        <div data-role="content">
+          <div data-role="collapsible">
+            <h1>联系信息</h1>
+            <p>
+              <div data-role="fieldcontain">
+                <table>
+                  <tr>
+                    <td>
+                      <label for="PhoneNumber" style="width:120px">联系电话</label>
+                    </td>
+                    <td width="300px">
+                      <input type="text" name="PhoneNumber" id="PhoneNumber" style="height:40px">
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div>
+                  <label for="AlertPhone" id="AlertPhone" style="color:red; width:200px">联系电话必须为手机或座机</label>  
+              </div>
+              <div data-role="fieldcontain">
+                <table>
+                  <tr>
+                    <td>
+                      <label for="HomeAddress" style="width:80px">家庭住址</label>
+                    </td>
+                    <td width="300px">
+                      <input type="text" name="HomeAddress" id="HomeAddress" style="height:40px">
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div data-role="fieldcontain">
+                <table>
+                  <tr>
+                    <td>
+                      <label for="EmergencyContact" style="width:120px">紧急联系人</label>
+                    </td>
+                    <td width="300px">
+                      <input type="text" name="EmergencyContact" id="EmergencyContact" style="height:40px">
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div data-role="fieldcontain">
+                <table>
+                  <tr>
+                    <td>
+                      <label for="EmergencyContactPhoneNumber" style="width:120px">紧急联系人电话</label>
+                    </td>
+                    <td width="300px">
+                      <input type="text" name="EmergencyContactPhoneNumber" id="EmergencyContactPhoneNumber" style="height:40px">
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div>
+                  <label for="AlertEmergencyPhone" id="AlertEmergencyPhone" style="color:red; width:200px">联系电话必须为手机或座机</label>  
+              </div>
+            </p>
+          </div>
+        </div>
+        <div data-role="content">
+          <label for="AlertConnectInfo" id="AlertConnectInfo" style="color:red">联系信息格式不正确</label>
+        </div>
+              
+      </div> 
+      <div class="ui-block-c"></div>
+    </div>    
+    
+    <div>
+          <input type="text" name="DoctorId" id="DoctorId" data-role="none" style="display: none;">
+          <input type="text" name="InvalidFlag" id="InvalidFlag" data-role="none" style="display: none;">
+          <input type="text" name="Flag" id="Flag" data-role="none" style="display: none;">
+    </div> 
+    
+    <div style="text-align:center">
+      <a href="#ResetInsure" data-inline="true" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-check ui-btn-icon-left ui-btn-a" data-transition="pop">重置</a>
+      <a href="#SaveInsure" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-check ui-btn-icon-left ui-btn-a" data-transition="pop">保存</a>
+    </div>
+    
+    <div data-role="popup" id="SaveInsure" data-theme="a" data-overlay-theme="b" class="ui-content" style="width:300px; height:150px; padding-bottom:2em;">
+      <h3 align="center" style="font-size:20px; height:50px">保存确认</h3>
+      <p align="center" style="font-size:16px; height:40px"">您确定保存基本信息吗？</p>
+      <div data-role="fieldcontain" align="center">
+        <a href="#" data-rel="back" onclick = "SaveInfo()" class="ui-shadow ui-btn ui-corner-all ui-btn-b ui-icon-check ui-btn-icon-left ui-btn-inline ui-mini">确认</a>
+        <a href="#" data-rel="back" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini">取消</a>
+      </div>
+    </div>
+    <div data-role="popup" id="ResetInsure" data-theme="a" data-overlay-theme="b" class="ui-content" style="width:300px; height:150px; padding-bottom:2em;">
+      <h3 align="center" style="font-size:20px; height:50px">重置确认</h3>
+      <p align="center" style="font-size:16px; height:40px"">您确定重置基本信息吗？</p>
+      <div data-role="fieldcontain" align="center">
+        <a href="#" data-rel="back" onclick = "ResetInfo()" class="ui-shadow ui-btn ui-corner-all ui-btn-b ui-icon-check ui-btn-icon-left ui-btn-inline ui-mini">确认</a>
+        <a href="#" data-rel="back" class="ui-shadow ui-btn ui-corner-all ui-btn-inline ui-mini">取消</a>
+      </div>
+    </div>
+  
+  </div> 
+
+  <div data-role="page" id="UploadPhoto">
+    <div data-role="header">
+      <h1>更换头像</h1>
+    </div>
+    
+    <div data-role="content">
+      <a href="#" data-role="button" onclick="capturePhoto()">拍照</a>
+      <a href="#" data-role="button" onclick="getPhoto(pictureSource.PHOTOLIBRARY);">从手机相册选择</a>
+      <a href="#MainPage" data-role="button">取消</a>
+    </div>
+  </div> 
+
+</body>
+
+</html>
