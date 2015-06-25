@@ -1,2 +1,2 @@
-c:\CDMISapp\XPhone\platforms\android\ant-build\AndroidManifest.xml : \
-c:\CDMISapp\XPhone\platforms\android\AndroidManifest.xml \
+D:\WorkPlace\Github\ZXPhone\platforms\android\ant-build\AndroidManifest.xml : \
+D:\WorkPlace\Github\ZXPhone\platforms\android\AndroidManifest.xml \
