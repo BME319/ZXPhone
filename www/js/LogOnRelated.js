@@ -103,7 +103,7 @@ function SubmitForm(){
 															}
 													},
 													error: function(msg) {
-														alert("数据库连接失败");	
+														alert("Error: GetAllRoleMatch");	
 													}
 												});
 											  }
@@ -115,11 +115,14 @@ function SubmitForm(){
 											  }
 										  },
 										  error: function(msg) {
-											  alert("数据库连接失败");	
+											  alert("Error: GetActivatedState");	
 										  }
 									  });
 								  
 								  }
+							  },
+							  error: function(msg) {
+								  alert("Error: GetIDByInput");	
 							  }
 						  });
 				  }
@@ -129,7 +132,7 @@ function SubmitForm(){
 				  }
 				  },
 				  error: function(msg) {
-					  alert("数据库连接失败");	
+					  alert("Error: CheckPasswordByInput");	
 				  }
 			  });
 			}
@@ -152,12 +155,10 @@ function Activition() {
 			var UserId = window.localStorage.getItem("ID");
 			//alert(UserId);
 			var InviteCode = $('#InviteCode').val();
-			var Type = "1";
-			var Name = "SJ"; 
-			var revUserId = "TDY";
-			var TerminalName = "Dell-PC";
-			var TerminalIP = "XXX.XXX.XXX.XXX"
-			var DeviceType = 4;
+			//var revUserId = "TDY";
+			//var TerminalName = "Dell-PC";
+			//var TerminalIP = "XXX.XXX.XXX.XXX"
+			//var DeviceType = 4;
 			
 			if (InviteCode != "")
 			{
@@ -189,7 +190,7 @@ function Activition() {
 						}
 					},
 					error: function(msg) {
-						alert("数据库连接失败");	
+						alert("Error： SetActivition");	
 					}
 				});
 			}
@@ -274,9 +275,13 @@ function Verification() {
 						alert("验证码错误");	
 					}
 				}
+				else
+				{
+					alert("用户名不存在");	
+				}
 			},
 			error: function(msg) {
-				alert("用户名不存在或数据库连接失败");	
+				alert("Error: GetIDByInput");	
 			}
 		});
 	}
@@ -304,10 +309,10 @@ function ResetPassword() {
 			//alert(Key);
 			//alert(Device);
 			var OldPassword = "#*bme319*#";
-			var revUserId = "TDY";
-			var TerminalName = "Dell-PC";
-			var TerminalIP = "XXX.XXX.XXX.XXX"
-			var DeviceType = 4;
+			//var revUserId = "TDY";
+			//var TerminalName = "Dell-PC";
+			//var TerminalIP = "XXX.XXX.XXX.XXX"
+			//var DeviceType = 4;
 			
 			if (NewPassword != "" && ConfirmPassword != "" && NewPassword == ConfirmPassword)
 			{
@@ -359,7 +364,7 @@ function ResetPassword() {
 						}
 					},
 					error: function(msg) {
-							alert("数据库连接失败");	
+							alert("Error：ChangePassword");	
 						}
 				});
 			}
@@ -379,3 +384,63 @@ function ResetPassword() {
 				$("#ConfirmPassword").focus();
 			}
 		}
+		
+		
+/**********************手机号码正则验证***********************/	
+$(document).ready(function() {
+	
+    $("#UserId").blur(function () {
+		var PHONENUMBER = $("#UserId").val();
+		var isPhone = /^1[3|4|5|8][0-9]\d{4,8}$/;
+
+		//alert(isPhone.test(PHONENUMBER));
+		//alert(PHONENUMBER.length)
+		if (PHONENUMBER.length == 11)
+		{
+			if (isPhone.test(PHONENUMBER))
+			{
+				document.getElementById("AlertUserId").style.display = "none";
+				//alert(PHONENUMBER);
+			}	
+			else
+			{
+				//alert(PHONENUMBER.length);
+				document.getElementById("AlertUserId").innerHTML = "请输入正确的手机号码";
+				document.getElementById("AlertUserId").style.display = "block";
+				//alert("不是正确的手机号码");
+			}
+		}
+		else
+		{
+			//alert(PHONENUMBER.length);
+			document.getElementById("AlertUserId").innerHTML = "请输入11位手机号码";
+			document.getElementById("AlertUserId").style.display = "block";
+			//alert("请输入11位手机号码");	
+		}
+		/*if (isPhone.test(PHONENUMBER))
+		{
+			document.getElementById("AlertUserId").style.display = "none";
+			alert(PHONENUMBER);
+		}
+		else 
+		{
+			//alert("test");
+			alert(PHONENUMBER.length);
+			if (PHONENUMBER.length == 11)
+			{
+				//alert(PHONENUMBER.length);
+				document.getElementById("AlertUserId").innerHTML = "请输入正确的手机号码";
+				document.getElementById("AlertUserId").style.display = "block";
+				//alert("不是正确的手机号码");
+			}
+			else
+			{
+				//alert(PHONENUMBER.length);
+				document.getElementById("AlertUserId").innerHTML = "请输入11位手机号码";
+				document.getElementById("AlertUserId").style.display = "block";
+				//alert("请输入11位手机号码");	
+			}	
+		}*/
+	}
+	)
+});
