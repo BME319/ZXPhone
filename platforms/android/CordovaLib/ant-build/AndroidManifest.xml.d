@@ -1,2 +1,2 @@
-C:\CDMISapp\XPhone\platforms\android\CordovaLib\ant-build\AndroidManifest.xml : \
-C:\CDMISapp\XPhone\platforms\android\CordovaLib\AndroidManifest.xml \
+D:\WorkPlace\Github\ZXPhone\platforms\android\CordovaLib\ant-build\AndroidManifest.xml : \
+D:\WorkPlace\Github\ZXPhone\platforms\android\CordovaLib\AndroidManifest.xml \

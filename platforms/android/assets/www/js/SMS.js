@@ -152,7 +152,7 @@
 					{		
 						CreateSMS("Send", GetLatestSMS(TheOtherId, ThisUserId)[4], Content);
 						document.getElementById('SMSContent').value = "";
-						$('#SMSContent').attr("rows", "1");
+						//$('#SMSContent').attr("rows", "1");
 						document.getElementById('MainField').scrollTop = document.getElementById('MainField').scrollHeight;
 					}
 					else
@@ -165,6 +165,7 @@
 				}
 			});
 		}
+		document.getElementById('SMSContent').style.height = "47px"; //设定文本域初始高度
 		$('#MainField').attr("class", "NormalField");
 	}
 	
