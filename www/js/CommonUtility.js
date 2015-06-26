@@ -4,7 +4,8 @@
  //var serverIP = '10.12.43.103:8085';
   //var serverIP = '10.12.43.63:8088';
  //var serverIP = '10.12.43.66:8088';
- var serverIP = '10.13.22.66:8088';
+  var serverIP = '192.168.1.20:8080';
+ //var serverIP = '10.13.22.66:8088';
  var serviceName = 'Services.asmx';
 
 

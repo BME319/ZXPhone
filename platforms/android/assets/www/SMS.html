@@ -17,7 +17,6 @@
 <script src="jquery-mobile/jquery.mobile-1.4.2.js"></script>
 <script type="text/javascript" src="js/CommonUtility.js"></script>
 <script type="text/javascript" src="js/Resize.js"></script>
-<script type="text/javascript" src="js/SMS.js"></script>
 <script>
 //强制使用长链接
 //      window.WEB_XHR_POLLING = true;
@@ -97,98 +96,7 @@
             </ul>
         </div><!-- /navbar -->
 	</div>
-  
-
 </div>
 </body>
-<script>
-	var ThisUserId = window.localStorage.getItem("ID");
-	var TheOtherId = window.localStorage.getItem("DoctorId");
-	var piUserId = window.localStorage.getItem("ID");
-	var piTerminalName = "Y-PHONE";
-	var piTerminalIP = window.localStorage.getItem("TerminalIP");
-	var Device = window.localStorage.getItem("Device");
-	var piDeviceType = (Device == "Phone")?1:0;
-	
-	var DocHeight = $(document).height();
-	
-	var ClickFlag = true;
-	var AppKey = "sfci50a7chxxi";
-	var InitialHt = $("#SMSContent").height(); //初始高度
-	var InitialTop = $("#OutField").position().top; //初始位置
-	var MaxHt = 0; //输入框最大高度
-	
-	$(document).ready(function(event){
-	  $("#DoctorName").html(window.localStorage.getItem("DoctorName"));
-	  $("#DoctorPhoto").attr("src", window.localStorage.getItem("DoctorPhoto"));
-	  GetSMSDialogue(ThisUserId, TheOtherId);
-	  document.getElementById('MainField').scrollTop = document.getElementById('MainField').scrollHeight;
-	  
-	  var SMSBtn = document.getElementById('SMSbtn');	
-	  SMSBtn.addEventListener("mouseover", ChangeFlagToF, false);
-	  SMSBtn.addEventListener("mouseout", ChangeFlagToT, false);
-	  SMSBtn.addEventListener("click", submitSMS, false); //rongyun 20150615
-	  
-	  document.getElementById('SMSContent').style.height = "47px"; //设定文本域初始高度
-	  $('#GenaralField').height(DocHeight-160); //设定文档高度
-	})
-	
-	
-
-	//autogrow初始化
-	$("#SMSContent").textinput({
-  		autogrow: true
-	});
-	
-	//固定文本框下边框与添加滚动条
-	$("#SMSContent").resize(function(){
-		var PresentTop = $("#OutField").position().top; //获取当前位置
-		var PresentHt = $("#SMSContent").height(); //获取当前始高度
-		var t = document.getElementById('SMSContent'); 
-		var h = t.scrollHeight; 
-		if (PresentHt < 170)
-		{
-			$( "#SMSContent" ).textinput( "option", "autogrow", true );
-			if (PresentHt != InitialHt)
-			{
-				var temp = PresentHt - InitialHt;
-				InitialHt = PresentHt; //改变比较值
-				$("#OutField").css("top", PresentTop - temp);
-			}
-		}
-		else
-		{
-			if (MaxHt == 0)
-			{
-				MaxHt = PresentHt;
-			}
-			$( "#SMSContent" ).textinput( "option", "autogrow", false );
-			h = h > MaxHt ? MaxHt : h;
-				
-			if (PresentHt != InitialHt)
-			{
-				var temp = PresentHt - InitialHt;
-				InitialHt = PresentHt; //改变比较值
-				$("#OutField").css("top", PresentTop - temp);
-			}
-		}
-	});
-		
-	//退格到最大高度内后恢复autogrow
-	document.onkeydown = function (event) 
-	{				
-		var e = event || window.event || arguments.callee.caller.arguments[0]; 
-		var t = document.getElementById('SMSContent'); 
-			
-		if(e && e.keyCode == 8)
-		{ 
-			var a = document.getElementById('SMSContent').scrollTop;
-			if ((a == 0) && ($("#SMSContent").height() <= MaxHt))
-			{
-				$( "#SMSContent" ).textinput( "option", "autogrow", true );
-			}
-		}
-	}
-		
-</script>
+<script type="text/javascript" src="js/SMS.js"></script>
 </html>
