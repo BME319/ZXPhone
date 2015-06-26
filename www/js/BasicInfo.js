@@ -1,11 +1,15 @@
 ﻿/**********************全局变量************************/
  var UserId = window.localStorage.getItem("ID");
  //var ImageAddressIP = window.localStorage.getItem("IPAddress");
-var ImageAddressIP = "http://10.12.43.66:8088";  //webserviceIP
-window.localStorage.setItem("PatientFile", "/CDFiles/PersonalPhoto/Patient");
+ var ImageAddressIP = "http://10.13.22.66:8088";  //webserviceIP
+ window.localStorage.setItem("PatientFile", "/PersonalPhoto");
  var ImageAddressFile = window.localStorage.getItem("PatientFile");
  var pictureSource;   // picture source
  var destinationType; // sets the format of returned value
+ var TerminalIP = window.localStorage.getItem("TerminalIP");
+ var TerminalName = window.localStorage.getItem("TerminalName");
+ var DeviceType = window.localStorage.getItem("DeviceType");
+ var revUserId  = window.localStorage.getItem("UserId");
  
 /**********************初始页面************************/
 $(document).ready(function(event){
@@ -27,7 +31,7 @@ $(document).ready(function(event){
 		
 	GetTypeList("SexType");
 	GetTypeList("AboBloodType");
-	GetTypeList("InsuranceType");
+	GetInsuranceTypeList();
 
 	GetDetailInfo(UserId);
  	GetBasicInfo(UserId);
@@ -62,6 +66,36 @@ function GetTypeList (Category)
       alert("GetTypeList出错啦！");
     }
   });
+}
+
+//获取医保下拉框内容
+function GetInsuranceTypeList() {
+	$("#InsuranceType").append('<option value=0>--请选择--</option>');
+
+	$.ajax({
+		type: "POST",
+		dataType: "xml",
+		timeout: 30000,
+		url: 'http://' + serverIP + '/' + serviceName + '/GetInsuranceType',
+		async: false,
+		data:
+		{
+		},
+		beforeSend: function () {
+		},
+		success: function (result) {
+			$(result).find('Table1').each(function () {
+				var Code = $(this).find("Code").text();
+				var Name = $(this).find("Name").text();
+				//alert(Code);
+				//alert(Name);
+				$("#InsuranceType").append('<option value=' + Code + '>' + Name + '</option>');
+			})
+		},
+		error: function (msg) {
+			alert("GetInsuranceType出错啦！");
+		}
+	});
 }
 
 //获取病人基本信息
@@ -344,6 +378,41 @@ function SaveInfo()
 		{
 			alert("基本信息保存失败！")
 		}*/
+		$.ajax({
+		  type: "POST",
+		  dataType: "xml",
+		  timeout: 30000,
+		  url: 'http://' + serverIP + '/' + serviceName + '/GetAllRoleMatch',
+		  async: false,
+		  data:
+		  {
+			  UserId: UserId
+		  },
+		  beforeSend: function () {
+		  },
+		  success: function (result) {
+			  $(result).find('Table1').each(function () {
+				  var RoleClass = $(this).find("RoleClass").text();
+				  if(RoleClass != 'Patient')
+				  {
+					  SetDoctorInfo(UserId, UserName, Birthday, Gender, IDNo, InvalidFlag, revUserId, TerminalName, TerminalIP, DeviceType);
+					  SetDoctorInfoDetail(UserId, "Contact", "Contact001_1", ItemSeq, IDNo, Description, SortNo, revUserId, TerminalName, TerminalIP, DeviceType);
+					  SetDoctorInfoDetail(UserId, "Contact", "Contact001_2", ItemSeq, Occupation, Description, SortNo, revUserId, TerminalName, TerminalIP, DeviceType);
+					  SetDoctorInfoDetail(UserId, "Contact", "Contact001_3", ItemSeq, Nationality, Description, SortNo, revUserId, TerminalName, TerminalIP, DeviceType);
+					  SetDoctorInfoDetail(UserId, "Contact", "Contact002_1", ItemSeq, PhoneNumber, Description, SortNo, revUserId, TerminalName, TerminalIP, DeviceType);
+					  SetDoctorInfoDetail(UserId, "Contact", "Contact002_2", ItemSeq, HomeAddress, Description, SortNo, revUserId, TerminalName, TerminalIP, DeviceType);
+					  SetDoctorInfoDetail(UserId, "Contact", "Contact002_3", ItemSeq, EmergencyContact, Description, SortNo, revUserId, TerminalName, TerminalIP, DeviceType);
+					  SetDoctorInfoDetail(UserId, "Contact", "Contact002_4", ItemSeq, EmergencyContactPhoneNumber, Description, SortNo, revUserId, TerminalName, TerminalIP, DeviceType);
+					  SetDoctorInfoDetail(UserId, "BodySigns", "Height", ItemSeq, Height, Description, SortNo, revUserId, TerminalName, TerminalIP, DeviceType);
+					  SetDoctorInfoDetail(UserId, "BodySigns", "Weight", ItemSeq, Weight, Description, SortNo, revUserId, TerminalName, TerminalIP, DeviceType);
+					  
+				  }
+			  })
+		  },
+		  error: function (msg) {
+			  alert("GetAllRoleMatch出错啦！");
+		  }
+	  });
 	}
 }
 
@@ -410,6 +479,40 @@ function SetBasicInfo (UserId, UserName, Birthday, Gender, BloodType, IDNo, Doct
   });
 }
 
+//保存基本信息到Ps.DoctorInfo
+function SetDoctorInfo(UserId, UserName, Birthday, Gender, IDNo, InvalidFlag, revUserId, TerminalName, TerminalIP, DeviceType) 
+{
+	$.ajax({
+		type: "POST",
+		dataType: "xml",
+		timeout: 30000,
+		url: 'http://' + serverIP + '/' + serviceName + '/SetPsDoctor',
+		async: false,
+		data:
+		{
+			UserId: UserId,
+			UserName: UserName,
+			Birthday: Birthday,
+			Gender: Gender,
+			IDNo: IDNo,
+			InvalidFlag: InvalidFlag,
+			revUserId: revUserId,
+			TerminalName: TerminalName,
+			TerminalIP: TerminalIP,
+			DeviceType: DeviceType
+		},
+		beforeSend: function () {
+		},
+		success: function (result) {
+			var Flag = $(result).find("boolean ").text();
+			$("#Flag").val(Flag);
+		},
+		error: function (msg) {
+			alert("SetPsDoctor出错啦！");
+		}
+	});
+}
+
 //保存详细信息到PsDetailInfo
 function SetDetailInfo(Patient, CategoryCode, ItemCode, ItemSeq, Value, Description, SortNo, revUserId, TerminalName, TerminalIP, DeviceType)
 {
@@ -443,6 +546,40 @@ function SetDetailInfo(Patient, CategoryCode, ItemCode, ItemSeq, Value, Descript
       alert("SetPatBasicInfoDetail出错啦！");
     }
   });
+}
+
+//保存详细信息到PsDoctorInfoDetail
+function SetDoctorInfoDetail(Doctor, CategoryCode, ItemCode, ItemSeq, Value, Description, SortNo, piUserId, piTerminalName, piTerminalIP, piDeviceType) {
+	$.ajax({
+		type: "POST",
+		dataType: "xml",
+		timeout: 30000,
+		url: 'http://' + serverIP + '/' + serviceName + '/SetDoctorInfoDetail',
+		async: false,
+		data:
+		{
+			Doctor: Doctor,
+			CategoryCode: CategoryCode,
+			ItemCode: ItemCode,
+			ItemSeq: ItemSeq,
+			Value: Value,
+			Description: Description,
+			SortNo: SortNo,
+			piUserId: piUserId,
+			piTerminalName: piTerminalName,
+			piTerminalIP: piTerminalIP,
+			piDeviceType: piDeviceType
+		},
+		beforeSend: function () {
+		},
+		success: function (result) {
+			Flag = $(result).find("boolean ").text();
+			$("#Flag").val(Flag);
+		},
+		error: function (msg) {
+			alert("SetDoctorInfoDetail出错啦！");
+		}
+	});
 }
 
 /**********************更换头像************************/
@@ -528,6 +665,7 @@ var TerminalIP = window.localStorage.getItem("TerminalIP");
 	var Description = null;
 	var SortNo = "1";
 	SetDetailInfo(UserId, "Contact", "Contact001_4", ItemSeq, PhotoAddress, Description, SortNo, revUserId, TerminalName, TerminalIP, DeviceType);
+	CheckMstRole(UserId, ItemSeq, PhotoAddress, Description, SortNo, revUserId, TerminalName, TerminalIP, DeviceType);
 	var Flag = document.getElementById("Flag").value;
 	if (Flag == "true")
 	{
@@ -542,4 +680,40 @@ var TerminalIP = window.localStorage.getItem("TerminalIP");
 function fail(error) {
 	alert("头像更新失败！");
 }
+
+//获取角色信息并保存相应医生角色基本信息
+function CheckMstRole(UserId, ItemSeq, PhotoAddress, Description, SortNo, revUserId, TerminalName, TerminalIP, DeviceType)
+{
+	$.ajax({
+		type: "POST",
+		dataType: "xml",
+		timeout: 30000,
+		url: 'http://' + serverIP + '/' + serviceName + '/GetAllRoleMatch',
+		async: false,
+		data:
+		{
+			UserId: UserId
+		},
+		beforeSend: function () {
+		},
+		success: function (result) {
+			$(result).find('Table1').each(function () {
+				var RoleClass = $(this).find("RoleClass").text();
+				If (RoleClass = 'Patient')
+				{
+					SetDoctorInfo(UserId, "Contact", "Contact001_4", ItemSeq, PhotoAddress, Description, SortNo, revUserId, TerminalName, TerminalIP, DeviceType);
+					var Flag = document.getElementById("Flag").value;
+					if (Flag != "true")
+					{
+					  alert("医生头像地址更新失败！");
+					}
+				}
+			})
+		},
+		error: function (msg) {
+			alert("GetAllRoleMatch出错啦！");
+		}
+	});
+}
+
 
