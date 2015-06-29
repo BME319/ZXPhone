@@ -78,8 +78,7 @@ var MaxHt = 0; //输入框最大高度
 
 
 var ws; //websocket
-var wsServerIP = getLocalmachineIPAddress() + ":4141/chat";
-var SocketCreated = false;
+var wsServerIP = "192.168.1.20:4141/chat";var SocketCreated = false;
 var isUserloggedout = false;
 
 
@@ -97,6 +96,7 @@ $(document).ready(function(event){
   document.getElementById('SMSContent').style.height = "47px"; //设定文本域初始高度
   $('#GenaralField').height(DocHeight-160); //设定文档高度
   WsPush();
+  SetSMSRead(ThisUserId, TheOtherId); //将消息变为已读
 })
 
 //**************************************************************************************
@@ -554,4 +554,33 @@ function ChangeReadStatus(MessageNo)
   function BacktoLogOn(){
 	window.localStorage.clear();
 	window.location.href='LogOn-Phone.html';
+}
+
+//SetSMSRead 改写阅读状态（多条）
+function SetSMSRead (Reciever, SendBy)
+{
+	$.ajax({
+	type: "POST",
+	dataType: "xml",
+	timeout: 30000,
+	url: 'http://'+ serverIP +'/'+serviceName+'/SetSMSRead',
+	async: false,
+	data: 
+	{
+		Reciever: Reciever,
+		SendBy: SendBy,
+		piUserId: piUserId,
+		piTerminalName: piTerminalName,
+		piTerminalIP: piTerminalIP,
+		piDeviceType: piDeviceType
+	},
+	beforeSend: function() {
+	},
+	success: function(result) {
+		//var flag = $(result).find("boolean").text();  
+	},
+	error: function(msg) {
+	  alert("SetSMSRead出错啦！");
+	}
+  });
 }
