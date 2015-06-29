@@ -38,9 +38,9 @@
 }
 .NormalField {
 	overflow-y: auto;
-	height: 400px;
+	height:470px;
 }
 .ShortField {
 	overflow-y: auto;
-	height: 200px;
+	height:230px;
 }
