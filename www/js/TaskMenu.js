@@ -16,7 +16,7 @@
 				var m = $(result).find('UserName').text();
 				window.localStorage.setItem("PatientName",m);
 			},
-			error: function(msg) {alert("Error!");}
+			error: function(msg) {alert("GetPatientName Error!");}
 		});
 	}
 	
@@ -39,7 +39,7 @@
 				else m = PatientURL + m;
 				window.localStorage.setItem("PatientPhoto",m);
 			},
-			error: function(msg) {alert("Error!");}
+			error: function(msg) {alert("GetPatientPhoto Error!");}
 		});
 	}
 	
@@ -60,7 +60,7 @@
 				else m = DoctorURL+m;
 				window.localStorage.setItem("DoctorPhoto",m);
 			},
-			error: function(msg) {alert("Error!");}
+			error: function(msg) {alert("GetDoctorPhoto Error!");}
 		});
 	}
 	
@@ -93,7 +93,7 @@
 					RefreshTaskList(2);
 				}
 			},
-			error: function(msg) {alert("Error!");}
+			error: function(msg) {alert("SetComplianceDetail Error!");}
 		});
 	}
 	
@@ -136,7 +136,7 @@
 				//alert(date);
 				$("#DateTimebyNow").text(date);
 			},
-			error: function(msg) {alert("Error!");}
+			error: function(msg) {alert("GetDateTimebyNow Error!");}
 		});
 	}
 	
@@ -220,7 +220,7 @@
 				})
 				$("#TaskList").listview("refresh");
 			},
-			error: function(msg) {alert("Error!");}
+			error: function(msg) {alert("GetTaskListbyStatus Error!");}
 		});
 	}
 	
@@ -248,15 +248,15 @@
 				GetDoctorPhoto(m[1]);
 				window.localStorage.setItem("DoctorName",m[2]);
 			},
-			error: function(msg) {alert("Error!");}
+			error: function(msg) {alert("GetPlanInfo Error!");}
 		});
 	}
 	
 	function GetModule(PID){
 		window.localStorage.setItem("Module","M1");
-		window.localStorage.setItem("IPAddress", "http://10.12.43.66:8088");
-		window.localStorage.setItem("PatientFile", "/CDFiles/PersonalPhoto/Patient");
-		window.localStorage.setItem("DoctorFile", "/CDFiles/PersonalPhoto/Doctor");
+		window.localStorage.setItem("IPAddress", "http://10.13.22.66:8088");
+		window.localStorage.setItem("PatientFile", "/PersonalPhoto/Patient");
+		window.localStorage.setItem("DoctorFile", "/PersonalPhoto/Doctor");
 		PatientURL = window.localStorage.getItem("IPAddress")+window.localStorage.getItem("PatientFile")+"/";
 		DoctorURL = window.localStorage.getItem("IPAddress")+window.localStorage.getItem("DoctorFile")+"/";
 	}
