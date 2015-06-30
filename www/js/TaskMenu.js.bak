@@ -16,7 +16,7 @@
 				var m = $(result).find('UserName').text();
 				window.localStorage.setItem("PatientName",m);
 			},
-			error: function(msg) {alert("GetPatientName Error!");}
+			error: function(msg) {alert("Error!");}
 		});
 	}
 	
@@ -39,7 +39,7 @@
 				else m = PatientURL + m;
 				window.localStorage.setItem("PatientPhoto",m);
 			},
-			error: function(msg) {alert("GetPatientPhoto Error!");}
+			error: function(msg) {alert("Error!");}
 		});
 	}
 	
@@ -60,7 +60,7 @@
 				else m = DoctorURL+m;
 				window.localStorage.setItem("DoctorPhoto",m);
 			},
-			error: function(msg) {alert("GetDoctorPhoto Error!");}
+			error: function(msg) {alert("Error!");}
 		});
 	}
 	
@@ -93,7 +93,7 @@
 					RefreshTaskList(2);
 				}
 			},
-			error: function(msg) {alert("SetComplianceDetail Error!");}
+			error: function(msg) {alert("Error!");}
 		});
 	}
 	
@@ -136,7 +136,7 @@
 				//alert(date);
 				$("#DateTimebyNow").text(date);
 			},
-			error: function(msg) {alert("GetDateTimebyNow Error!");}
+			error: function(msg) {alert("Error!");}
 		});
 	}
 	
@@ -220,7 +220,7 @@
 				})
 				$("#TaskList").listview("refresh");
 			},
-			error: function(msg) {alert("GetTaskListbyStatus Error!");}
+			error: function(msg) {alert("Error!");}
 		});
 	}
 	
@@ -248,7 +248,7 @@
 				GetDoctorPhoto(m[1]);
 				window.localStorage.setItem("DoctorName",m[2]);
 			},
-			error: function(msg) {alert("GetPlanInfo Error!");}
+			error: function(msg) {alert("Error!");}
 		});
 	}
 	
