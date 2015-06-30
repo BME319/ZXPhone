@@ -16,7 +16,7 @@ function SubmitForm(){
 			var userId = $("#UserId").val();
 			var password = $("#Password").val();
 			var myRegEmail = /^[-_A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/;
-			var myRegPhone = /^\d{11}$/;
+			var myRegPhone = /^1[3|4|5|7|8][0-9]\d{4,8}$/;
 			window.localStorage.setItem("Password",password);
 			window.localStorage.setItem("UserName",userId);
 			window.localStorage.setItem("Device","Phone");
@@ -229,7 +229,7 @@ function Verification() {
 	var ValidateCode = $("#ValidateCode").val();
 	var valiCode = "test";
 	var myRegEmail = /^[-_A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/;
-	var myRegPhone = /^\d{11}$/;
+	var myRegPhone = /^1[3|4|5|7|8][0-9]\d{4,8}$/;
 	
 	if (userId != "" && ValidateCode != "")
 	{
@@ -391,7 +391,7 @@ $(document).ready(function() {
 	
     $("#UserId").blur(function () {
 		var PHONENUMBER = $("#UserId").val();
-		var isPhone = /^1[3|4|5|8][0-9]\d{4,8}$/;
+		var isPhone = /^1[3|4|5|7|8][0-9]\d{4,8}$/;
 
 		//alert(isPhone.test(PHONENUMBER));
 		//alert(PHONENUMBER.length)
