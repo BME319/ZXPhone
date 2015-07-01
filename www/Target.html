@@ -38,7 +38,7 @@
        <div data-role="navbar">
           <ul>
             <li><a href="#" data-role="button" data-icon="home" class="ui-btn-active ui-state-persist" onclick="GetImplementationForPhone(PatientId, Module)" >目标主页</a></li>
-           <li><a href="#pagetwo" data-role="button" data-icon="grid" onclick="GetBPdetail()">查看详细</a></li>
+           <li><a href="#pagetwo" data-role="button" data-icon="grid" onclick="GetDetails()">查看详细</a></li>
         </ul>
       </div>
 </div>
@@ -83,26 +83,28 @@
 
 
   <div id="yEPlan">
-     <div id="con">
+     <div id="con" style="margin-top:-15px;">
                   
-      <div class="ui-grid-a" style="margin-left:5%;height:70px;width:300px;">
-       <div class="ui-block-a" style="width:110px;">     
+      <div class="ui-grid-a" style="margin-left:2%;height:70px;width:300px;">
+       <div class="ui-block-a" style="width:120px;">     
        <div data-role="fieldcontain">
-        <select name="switch" id="switch" data-role="slider">
-          <option value="0" selected>收缩压</option>
-          <option value="1" >舒张压</option>
-        </select>
+        <select name="switch" id="switch" data-native-menu="false">
+				<option value="Bloodpressure_1" >收缩压</option>
+				<option value="Bloodpressure_2" >舒张压</option>
+                <option value="Pulserate_1" >脉率</option>
+		  </select>
+        
       </div>
          
      </div>
-     <div class="ui-block-b" style="width:180px;margin-top:-10px;">        
-          <p><img alt="Load" src="img/original.png" style="width:30px;height:5px;" />&nbsp;起始值：<span id="BPoriginal"></span>mmgH</p>         
-        <p><img alt="Load" src="img/target.png" style="width:30px;height:5px;" />&nbsp;目标值：<span id="BPtarget"></span>mmgH</p>
+     <div class="ui-block-b" style="width:180px;margin-top:-5px;" id="original_target">
+          <p><img alt="Load" src="img/original.png" style="width:25px;height:5px;margin-left:10px;" />&nbsp;起始：<span id="BPoriginal"></span>mmgH</p>         
+        <p><img alt="Load" src="img/target.png" style="width:25px;height:5px;margin-left:10px;" />&nbsp;目标：<span id="BPtarget"></span>mmgH</p>
      </div>
     </div>
     
     
-      <div id="chartdiv" style="width:90%; height:400px;margin-top:5px;margin-left:5%;">
+      <div id="chartdiv" style="width:95%; height:400px;margin-top:5px;margin-left:5%;">
       </div>
    </div>
    
@@ -121,7 +123,6 @@
       </div>
  
    </div>
-
      
 </div> <!-- content end-->
 <div data-role="footer" data-id="foo1" data-position="fixed">
@@ -151,7 +152,7 @@
 
 <div data-role="page" id="pagetwo">
   <div data-role="header">
-    <h1>近一周血压数据</h1>
+    <h1>近一周体征数据</h1>
                 <div class="ui-btn-right">
             <a id="Refresh" href="#" data-role="button" data-icon="refresh" data-iconpos="notext" onClick="window.location.reload(); ">Refresh</a>
         </div>
@@ -173,7 +174,7 @@
        </div>
   
        <div id="detail_content">
-       <ul data-role="listview" data-inset="true" id="ul_target">
+       <ul data-role="listview" data-inset="true" id="ul_target" style="margin-top:-5px;">
        
        </ul>
        </div>
@@ -190,10 +191,10 @@
     var Module;
    
    //初始值
-	var chart;
-	var guides;
+	var chart="";
 	var StartDate=0;
     var EndDate=0;
+	var NowPlanNo="";
   
   $(document).ready(function(){  
 	    PatientId = localStorage.getItem("ID");  //获取传递的参数
