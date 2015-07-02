@@ -11,8 +11,7 @@
  var revUserId  = window.localStorage.getItem("ID"); //使用PID
  
 /**********************登录***********************/
-function SubmitForm(){
-	
+function SubmitForm(){		
 			var userId = $("#UserId").val();
 			var password = $("#Password").val();
 			var myRegEmail = /^[-_A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/;
@@ -107,11 +106,16 @@ function SubmitForm(){
 													}
 												});
 											  }
-											  else
+											  else if (Class == "1")
 											  {
 												  setTimeout(function(){
 													  location.href = "Activition-Phone.html";
 												  },2000)
+											  }
+											  else
+											  {
+												 document.getElementById("alert").innerHTML = "抱歉，由于权限问题，您无法使用本系统";
+												 $("#popdiv").popup("open");
 											  }
 										  },
 										  error: function(msg) {
@@ -128,7 +132,8 @@ function SubmitForm(){
 				  }
 				  else
 				  {
-					  alert("密码错误或用户名不存在");	
+					  document.getElementById("alert").innerHTML = "密码错误或用户名不存在";
+					  $("#popdiv").popup("open");	
 				  }
 				  },
 				  error: function(msg) {
@@ -138,12 +143,14 @@ function SubmitForm(){
 			}
 			else if (userId == "") 
 			{
-                alert("用户名不能为空！");
+				document.getElementById("alert").innerHTML = "用户名不能为空！";
+				$("#popdiv").popup("open");	
                 $("#username").focus();
             }
             else if (password == "") 
 			{
-                alert("密码不能为空！");
+				document.getElementById("alert").innerHTML = "密码不能为空！";
+				$("#popdiv").popup("open");	
                 $("#userpassword").focus(); 
             }
 		};
@@ -185,8 +192,8 @@ function Activition() {
 						}
 						else
 						{
-							document.getElementById("showlabel").innerHTML = "邀请码错误，请确认后重新输入邀请码！";
-							document.getElementById("showlabel").style.display = "block";	
+							document.getElementById("alert").innerHTML = "邀请码错误，请确认后重新输入邀请码！";
+							$("#popdiv").popup("open");		
 						}
 					},
 					error: function(msg) {
@@ -196,7 +203,8 @@ function Activition() {
 			}
 			else if (InviteCode == "")
 			{
-				alert("邀请码不能为空！");
+				document.getElementById("alert").innerHTML = "邀请码不能为空！";
+				$("#popdiv").popup("open");	
                 $("#InviteCode").focus();
 			}
 		};
@@ -272,12 +280,14 @@ function Verification() {
 					}
 					else
 					{
-						alert("验证码错误");	
+						document.getElementById("alert").innerHTML = "验证码错误！";
+						$("#popdiv").popup("open");		
 					}
 				}
 				else
 				{
-					alert("用户名不存在");	
+					document.getElementById("alert").innerHTML = "用户名不存在！";
+					$("#popdiv").popup("open");			
 				}
 			},
 			error: function(msg) {
@@ -287,12 +297,14 @@ function Verification() {
 	}
 	else if (userId == "")
 	{
-		alert("用户名不能为空！");
+		document.getElementById("alert").innerHTML = "用户名不能为空！";
+		$("#popdiv").popup("open");		
 		$("#UserId").focus();
 	}
 	else if (ValidateCode == "")
 	{
-		alert("验证码不能为空！");
+		document.getElementById("alert").innerHTML = "验证码不能为空！";
+		$("#popdiv").popup("open");		
 		$("#ValidateCode").focus();
 	}
 }	
@@ -370,17 +382,20 @@ function ResetPassword() {
 			}
 			else if (NewPassword == "")
 			{
-				alert("新密码不能为空！");
+				document.getElementById("alert").innerHTML = "新密码不能为空！";
+				$("#popdiv").popup("open");	
                 $("#NewPassword").focus();
 			}
 			else if (ConfirmPassword == "")
 			{
-				alert("请再次输入新密码！");
+				document.getElementById("alert").innerHTML = "请再次输入新密码！";
+				$("#popdiv").popup("open");	
                 $("#ConfirmPassword").focus();
 			}
 			else if (NewPassword != ConfirmPassword)
 			{
-				alert("两次输入的密码不同，请再次确认新密码");
+				document.getElementById("alert").innerHTML = "两次输入的密码不同，请再次确认新密码";
+				$("#popdiv").popup("open");	
 				$("#ConfirmPassword").focus();
 			}
 		}

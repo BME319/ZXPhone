@@ -22,6 +22,7 @@
 		window.localStorage.setItem("Device","Phone");	
 		window.localStorage.setItem("TerminalName","Y-PHONE");
 		window.localStorage.setItem("DeviceType",1);
+		var isPatient = 0;
 		var myip = '127.0.0.1';
 		localStorage.setItem('TerminalIP', myip);
 		window.localStorage.setItem("Device","Phone");
@@ -77,12 +78,17 @@
 												if (Role == "Patient")
 												{
 													window.localStorage.setItem("AutoLogOn","Yes");
+													Patient = 1;
 													//alert("登陆成功");	
 													setTimeout(function(){
 														location.href = "TaskMenu.html";
 													},1000)
 												}
 											});
+											if (Patient == 0)
+											{
+												location.href = "LogOn-Phone.html";
+											}
 										}
 									},
 									error: function(msg) {
