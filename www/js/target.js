@@ -8,7 +8,7 @@
 	}*/
 
  function GetImplementationForPhone(PatientId, Module){
-	 //需要重新画图，改变chart、guide	 
+
 	$.ajax({  
         type: "POST",
         dataType: "json",
@@ -38,8 +38,8 @@
 			  {	
 			  	   //计划起止日期   	 
 				   NowPlanNo=data.NowPlanNo; 
-	               StartDate=data.StartDate;
-                   EndDate=data.EndDate;
+	               //StartDate=data.StartDate;
+                   //EndDate=data.EndDate;
 				
                    //进度、依从率
 			       animate(data.ProgressRate, data.RemainingDays);
@@ -66,6 +66,10 @@
 			       if(data.ChartData.OtherTasks=="1")  //除体征测量外，有无其他任务
 				   {
 			          createStockChart(data.ChartData);
+					  //监听下部图的bullet点 的点击事件
+					  chart.panels[1].addListener("clickGraphItem",showDetailInfo); 
+					  //监听下部图的横坐标lable 的点击事件
+					 //chart.panels[1].categoryAxis.addListener("clickItem",showDetailInfo);
 				   }
 				   else  //没有其他任务
 				   {
@@ -92,6 +96,126 @@
      });
   }
 
+	
+function showDetailInfo(event)
+{
+	//alert(event.item.category);
+	
+	//清空弹框内内容
+	$("#ul_targetDetial li").remove();
+	
+	//获取被点击的bullet的时间值，事件格式，许处理成string"20150618"格式传到webservice
+	var dateSelected=event.item.category;
+	var theyear=dateSelected.getFullYear();
+	var themonth=dateSelected.getMonth()+1;  
+	if(themonth<10)
+	{
+		var themonth="0"+themonth.toString();
+	}
+	var theday=dateSelected.getDate();
+	if(theday<10)
+	{
+		var theday="0"+theday.toString();
+	}
+	var theDate=theyear.toString()+themonth.toString()+theday.toString();
+	
+	//alert(PatientId);
+	//alert(NowPlanNo);
+	//alert(theDate);
+	/*
+	  //alert(event.item.category);
+	  //alert(event.index);  获取点的序号 0~
+     var dateSelected= chart.panels[1].categoryAxis.coordinateToDate(2); 
+	 //获取X值，再调method获取date 只能在没有缩放的时候使用
+	*/
+	
+	 $.ajax({  
+        type: "POST",
+        dataType: "json",
+		//timeout: 30000,  
+	url: 'http://'+ serverIP +'/'+serviceName+'/GetImplementationByDate',
+		//async:false,
+        data: {PatientId:PatientId, 
+		        PlanNo:NowPlanNo,
+				DateSelected:theDate
+			  },
+		beforeSend: function(){//alert(dateSelected);
+			},
+        success: function(data) {
+			
+			
+		var str="";
+		str+='<li data-role="list-divider" style="text-align:center;"> <span>'+data.Date+'</span><span style="margin-left:20px;">'+data.WeekDay+'</span></li>';
+		
+		//体征
+		if(data.VitalTaskComList.length>0)
+		{
+			str+=' <li ><h3 style="margin-top:-5px;margin-left:-5px;">体征测量</h3>';
+		for(var j=0;j<data.VitalTaskComList.length;j++)
+		{
+			if(data.VitalTaskComList[j].Status=="1"){
+			str+='<p style="margin-left:10px;font-size:14px;"> '+data.VitalTaskComList[j].SignName+'✔<span style="margin-left:10px;"> '+data.VitalTaskComList[j].Value+''+data.VitalTaskComList[j].Unit+'</span> <span style="margin-left:10px;">'+data.VitalTaskComList[j].Time+'</span></p>';
+			}
+			else
+			{
+				str+='<p style="margin-left:10px;font-size:14px;"> '+data.VitalTaskComList[j].SignName+'✘</p>';
+			}
+		}
+		str+='</li>'; 
+		}
+		
+		//生活方式
+		if(data.LifeTaskComList.length>0)
+		{
+			str+=' <li ><h3 style="margin-top:-5px;margin-left:-5px;">生活方式</h3><p style="font-size:14px;">';
+			
+		for(var j=0;j<data.LifeTaskComList.length;j++)
+		{
+			if(data.LifeTaskComList[j].Status=="1")
+			{
+				str+='<span style="margin-left:10px;"> '+data.LifeTaskComList[j].TaskName+'✔</span>';
+				
+			}
+			else
+			{
+				str+='<span style="margin-left:10px;"> '+data.LifeTaskComList[j].TaskName+'✘</span>';
+			}
+			
+		}
+		 str+='</p></li>'; 
+		}
+		
+		//用药
+		if(data.DrugTaskComList.length>0)
+		{
+			str+=' <li ><h3 style="margin-top:-5px;margin-left:-5px;">用药情况</h3>';
+			
+		for(var j=0;j<data.DrugTaskComList.length;j++)
+		{
+			if(data.DrugTaskComList[j].Status=="1")
+			{
+				str+='<p style="font-size:14px;"><span style="margin-left:10px;"> '+data.DrugTaskComList[j].TaskName+'✔</span></p>';
+				
+			}
+			else
+			{
+				str+='<span style="margin-left:10px;"> '+data.DrugTaskComList[j].TaskName+'✘</span></p>';
+			}
+		}
+		str+='</li>'; 
+		}
+     $("#ul_targetDetial").append(str);
+    $('#ul_targetDetial').listview('refresh');  
+	$("#popupDetail").popup("open");	
+		
+			}, 
+       error: function(msg) {alert("Error: showDetailInfo!");},
+	   complete: function() {      
+  
+        } 
+     });
+
+}
 
       //进度条动态
 function animate(a,b){
@@ -272,7 +396,7 @@ function animate(a,b){
                             bulletBorderThickness : 2,
                             bulletBorderAlpha : 1,		
 							showBalloon: true,		
-                            balloonText: "[[DrugDescription]]",
+                            balloonText: "",
 				            //labelText:"[[drugDescription]]"
 
 						}],
@@ -612,30 +736,23 @@ function GetDetails()
 	$("#noDetail").css("display","none");
 	$("#detail_content").css("display","none");
 	$("#detail_loading").css("display","block");
-		
-	if((StartDate==0) && (EndDate==0))
-	{	
-	   $("#detail_loading").css("display","none");	
-		$("#noDetail").css("display","block");
-	}
-	else
-	{
-		
-	    $("#ul_target li").remove(); 
-		//setTimeout(function(){},5000);
+	
+	$("#ul_target li").remove(); 
+	//setTimeout(function(){},5000);
 
-		//var PatientId="PID201506170005";
-		//var StartDate=20150617;
-		//var EndDate=20150620;
-		GetSignsDetailByPeriod(PatientId, "M1", StartDate, EndDate);
-	}
-	
-	
-	
+	//var PatientId="PID201506170005";
+    //var StartDate=20150617;
+    //var EndDate=20150620;
+   GetSignsDetailByPeriod();
 }
 
-
- function GetSignsDetailByPeriod(PatientId, Module, StartDate, EndDate){
+function GetSignsDetailByPeriod(){
+	 var Start_mark=0;
+	 if(StartDate==0)
+	 {
+		 var Start_mark=1;
+	 }
+	
 	$.ajax({  
         type: "POST",
         dataType: "json",
@@ -645,9 +762,10 @@ function GetDetails()
         data: {PatientId:PatientId, 
 		        Module:Module,
 				StartDate:StartDate, 
-		        EndDate:EndDate,
+		        Num:7,
 			  },
 		beforeSend: function(){
+			$("#detail_loading").css("display","block");
 			},
         success: function(data) {
 			
@@ -675,24 +793,50 @@ function GetDetails()
 				 }
 			     $("#ul_target").append(str);
 			    //$("#ul_target").trigger('create');
-			     $('#ul_target').listview('refresh');   
-			     $("#detail_loading").css("display","none"); 
+			     $('#ul_target').listview('refresh');
+				  StartDate=data.NextStartDate; 
+				    
+				  $("#detail_loading").css("display","none"); 
 				 $("#detail_content").css("display","block");
+				 
+				  if(data.NextStartDate == -1)
+				 {
+					$("#btn_getmore").css("visibility","hidden");
+				}
+				else
+				{
+					$("#btn_getmore").css("visilibity","visible");
+				}
+				  
+			    
 			}
 			else
 			{
-				$("#detail_loading").css("display","none"); 
-				$("#noDetail").css("display","block");
+				if(Start_mark== 1)
+				{
+					
+					$("#btn_getmore").css("visibility","hidden");
+					$("#detail_loading").css("display","none"); 
+				    $("#noDetail").css("display","block");
+				}
+				else
+				{
+					$("#btn_getmore").css("visibility","hidden");
+					$("#detail_loading").css("display","none"); 
+				    //$("#btn_getmore").css("display","none");
+				}
 			}
 		                  }, 
        error: function(msg) {alert("Error: GetSignsDetailByPeriod!");},
 	   complete: function() {      
              // $("div[data-role=content] ul").listview();    
 			  //$("div[data-role=content] ul li").listview("refresh");    
-			  
         } 
      });
   }
+  
+
+
   
   function BacktoLogOn(){
 		window.localStorage.clear();

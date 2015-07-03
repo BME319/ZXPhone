@@ -120,6 +120,11 @@
          <div align="center" style="margin-top:-5px;">
             <p id="RemainingDays" style="font-size:14px;color:#0048CC;"></p>
          </div>
+         <div data-role="popup" id="popupDetail" data-position-to="" style="width:290px;height:250px;overflow:auto;">
+            <ul data-role="listview" data-inset="true" id="ul_targetDetial" style="margin-top:0px;width:100%;">
+       
+            </ul>
+        </div>
       </div>
  
    </div>
@@ -159,16 +164,13 @@
     <div data-role="navbar">
           <ul>
             <li><a href="javascript:history.go(-1);" data-icon="home" data-role="button">目标主页</a></li>
-           <li><a href="#pagetwo" data-role="button" data-icon="grid" onclick="GetBPdetail()" class="ui-btn-active ui-state-persist" >查看详细</a></li>
+           <li><a href="#pagetwo" data-role="button" data-icon="grid" onclick="GetDetails()" class="ui-btn-active ui-state-persist" >查看详细</a></li>
         </ul>
     </div> 
   </div>
 
   <div data-role="content">
-       <div id="detail_loading" style="display: none; margin-top:10px" align="center">
-            <img alt="Load" src="img/history_loading.gif" style="width:50px;height:50px;" />
-            <p>加载中，请稍后</p>
-       </div>
+      
        <div id="noDetail" style="display: none; margin-top:10px" align="center">
             <p style="font-size: 20px; color: Blue;">无详细数据</p>
        </div>
@@ -177,6 +179,11 @@
        <ul data-role="listview" data-inset="true" id="ul_target" style="margin-top:-5px;">
        
        </ul>
+       <button id="btn_getmore" onclick="GetSignsDetailByPeriod()">加载更多</button>
+        <div id="detail_loading" style="display: none; margin-top:10px" align="center">
+            <img alt="Load" src="img/history_loading.gif" style="width:50px;height:50px;" />
+            <p>加载中，请稍后</p>
+       </div>
        </div>
   </div>
 </div> 
@@ -193,7 +200,7 @@
    //初始值
 	var chart="";
 	var StartDate=0;
-    var EndDate=0;
+    //var EndDate=0;
 	var NowPlanNo="";
   
   $(document).ready(function(){  
