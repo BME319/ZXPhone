@@ -70,7 +70,7 @@ var piDeviceType = (Device == "Phone")?1:0;
 var DocHeight = $(document).height();
 
 var ClickFlag = true;
-var AppKey = "sfci50a7chxxi";
+//var AppKey = "sfci50a7chxxi";
 var InitialHt = $("#SMSContent").height(); //初始高度
 var InitialTop = $("#OutField").position().top; //初始位置
 var MaxHt = 0; //输入框最大高度
@@ -78,7 +78,8 @@ var MaxHt = 0; //输入框最大高度
 
 
 var ws; //websocket
-var wsServerIP = "192.168.1.20:4141/chat";var SocketCreated = false;
+var wsServerIP = serverIP.substring(0, 11) + ":4141/chat"; 
+var SocketCreated = false;
 var isUserloggedout = false;
 
 
