@@ -1,7 +1,7 @@
 //实时显示未读消息数
 //********************************************************************
 var ws;
-var wsServerIP = "192.168.1.20:4141/chat";
+var wsServerIP = serverIP.substring(0, 11) + ":4141/chat"; 
 var SocketCreated = false;
 var isUserloggedout = false;
 
@@ -77,6 +77,7 @@ function Present ()
 {
    var TempStr;
    SMSCount2 = GetSMSCountForOne(window.localStorage.getItem("ID"), window.localStorage.getItem("DoctorId"));
+  // alert(window.localStorage.getItem("ID") + "   " + window.localStorage.getItem("DoctorId"));
   
    if (SMSCount2 != 0)
    {
@@ -101,7 +102,7 @@ function Present ()
 		   $('#SMSCount').remove();
 		   SMSCount1 = SMSCount2;
 	   }
-   }	  
+   }
 }
 
 //获取一对一未读消息数
@@ -125,7 +126,7 @@ function GetSMSCountForOne (Reciever, SendBy)
 				ret = $(result).text();
 			},
 			error: function(msg) {
-			  alert("ChangePushStatus出错啦！");
+			  alert("GetSMSCountForOne出错啦！");
 			}
 		});
 	return ret;
