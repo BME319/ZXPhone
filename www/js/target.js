@@ -443,6 +443,8 @@ function animate(a,b){
 				},
 				chartCursorSettings:{
 					usePeriod: "7DD",
+					zoomable:false,
+					 pan:true,
 					//pan:false,
 				    //zoomable:true,
 					//leaveCursor:"false",
@@ -775,11 +777,8 @@ function GetDetails()
 	$("#detail_loading").css("display","block");
 	
 	$("#ul_target li").remove(); 
-	//setTimeout(function(){},5000);
-
-	//var PatientId="PID201506170005";
-    //var StartDate=20150617;
-    //var EndDate=20150620;
+	
+	StartDate_detail=0; 
    GetSignsDetailByPeriod();
 }
 
