@@ -24,6 +24,10 @@
 
 <style>
 .barbox dd.barline div.charts{height:10px;overflow:hidden;background:url(img/barbg.gif) repeat-x;}
+#ul_targetDetial li
+{
+	padding-bottom: 0px;
+}
 </style>
 
 <div data-role="page" id="pageone">
@@ -76,32 +80,28 @@
             <p style="font-size: 20px; color: Blue;">当前无正在执行的计划</p>
     </div>
 
-    <div id="graph_loading" style="display: none; margin-top:10px" align="center">
-            <img alt="Load" src="img/history_loading.gif" style="width:50px;height:50px;" />
-            <p>加载中，请稍后</p>
-     </div> 
-
-
   <div id="yEPlan">
      <div id="con" style="margin-top:-15px;">
                   
       <div class="ui-grid-a" style="margin-left:2%;height:70px;width:300px;">
        <div class="ui-block-a" style="width:120px;">     
        <div data-role="fieldcontain">
-        <select name="switch" id="switch" data-native-menu="false">
-				<option value="Bloodpressure_1" >收缩压</option>
-				<option value="Bloodpressure_2" >舒张压</option>
-                <option value="Pulserate_1" >脉率</option>
-		  </select>
+         <select name="switch" id="sign_switch" data-native-menu="false">
+         </select>
         
       </div>
          
      </div>
-     <div class="ui-block-b" style="width:180px;margin-top:-5px;" id="original_target">
-          <p><img alt="Load" src="img/original.png" style="width:25px;height:5px;margin-left:10px;" />&nbsp;起始：<span id="BPoriginal"></span>mmgH</p>         
-        <p><img alt="Load" src="img/target.png" style="width:25px;height:5px;margin-left:10px;" />&nbsp;目标：<span id="BPtarget"></span>mmgH</p>
+     <div class="ui-block-b" style="width:180px;margin-top:-5px;" id="ori_tarDiv">
+          <p><img alt="起始值" src="img/original.png" style="width:25px;height:5px;margin-left:10px;" />&nbsp;起始：<span id="BPoriginal"></span></p>         
+        <p><img alt="目标值" src="img/target.png" style="width:25px;height:5px;margin-left:10px;" />&nbsp;目标：<span id="BPtarget"></span></p>
      </div>
     </div>
+    
+      <div id="graph_loading" style="display: none; margin-top:10px" align="center">
+            <img alt="Load" src="img/history_loading.gif" style="width:50px;height:50px;" />
+            <p>加载中，请稍后</p>
+     </div> 
     
     
       <div id="chartdiv" style="width:95%; height:400px;margin-top:5px;margin-left:5%;">
@@ -120,11 +120,11 @@
          <div align="center" style="margin-top:-5px;">
             <p id="RemainingDays" style="font-size:14px;color:#0048CC;"></p>
          </div>
-         <div data-role="popup" id="popupDetail" data-position-to="" style="width:290px;height:250px;overflow:auto;">
-            <ul data-role="listview" data-inset="true" id="ul_targetDetial" style="margin-top:0px;width:100%;">
-       
-            </ul>
-        </div>
+         
+
+        <div data-role="popup" id="popupDetail" class="ui-content" style="width:250px;padding-left: 1px;padding-right: 1px;padding-bottom: 0px;padding-top: 1px;" data-dismissible="false"><a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">关闭</a><div style="height:230px;overflow:auto;"><ul data-role="listview" data-inset="true" id="ul_targetDetial" style="width:100%;margin-top: 0px;"></ul></div></div>
+        
+        
       </div>
  
    </div>
@@ -200,8 +200,9 @@
    //初始值
 	var chart="";
 	var StartDate=0;
-    //var EndDate=0;
+    var EndDate=0;
 	var NowPlanNo="";
+	var StartDate_detail=0;
   
   $(document).ready(function(){  
 	    PatientId = localStorage.getItem("ID");  //获取传递的参数
@@ -210,7 +211,7 @@
 		$("#PatientName").html(window.localStorage.getItem("PatientName"));
 		$("#PatientPhoto").attr("src", window.localStorage.getItem("PatientPhoto"));	
 
-	   $('#switch').change(function(){ 
+	   $('#sign_switch').change(function(){ 
 	      selectDataset($(this).children('option:selected').val());
 	   });
 	  });
