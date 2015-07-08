@@ -2,8 +2,10 @@
 
 
 .barbox{height:18px;line-height:18px;overflow:hidden;width:200px;;margin:0px auto;padding:20px 0 0 0px;}
-.barbox dd{float:left;}
-.barbox dd.last{color:#0048CC;font-size:14px;margin-left:5px;}
+
+.barbox dd{text-align:center;}
+.barbox dd.last{color:#0048CC;font-size:14px;}
+
 .barbox dd.barline{width:80px;background:#E3E3E3;height:12px;overflow:hidden;margin:3px 10px 0 10px;display:inline;border-bottom:solid 1px #F4F4F4;border-right:solid 1px #F4F4F4;}
 .barbox dd.barline div.charts.barblue{background-position:0 -20px;border:1px solid #0A83E6;}
 

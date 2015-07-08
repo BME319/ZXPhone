@@ -42,7 +42,11 @@
                    EndDate=data.EndDate;
 				
                    //进度、依从率
-			       animate(data.ProgressRate, data.RemainingDays);
+			       //animate(data.ProgressRate, data.RemainingDays);
+				   
+				   var proText="计划进度："+data.ProgressRate+"%";
+		           $(".last").find("span").text(proText);
+				   
 			       var RemainingDays="距离计划结束还有"+data.RemainingDays+"天";
 			       $("#RemainingDays").text(RemainingDays);
 	
@@ -256,7 +260,7 @@ function animate(a,b){
 		},1000);
 		
 	});
-		var proText="进度：";
+		var proText="计划进度：";
 		proText+=a+"%";
 		//proText+=",距离计划结束还有"+b+"天";
 		$(".last").find("span").text(proText);
