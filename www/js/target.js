@@ -38,19 +38,38 @@
 			  {	
 			  	   //计划起止日期   	 
 				   NowPlanNo=data.NowPlanNo; 
-	               //StartDate=data.StartDate;
-                   //EndDate=data.EndDate;
+	               StartDate=data.StartDate;
+                   EndDate=data.EndDate;
 				
                    //进度、依从率
 			       animate(data.ProgressRate, data.RemainingDays);
 			       var RemainingDays="距离计划结束还有"+data.RemainingDays+"天";
 			       $("#RemainingDays").text(RemainingDays);
 	
-                   //收缩压的起始值，目标值必须有！
-                   $(".original_target").show();
-			       $("#BPoriginal").text(data.ChartData.GraphGuide.original);
-	               $("#BPtarget").text(data.ChartData.GraphGuide.target);
-				   
+	               //体征切换下拉框
+				  var str_option='';
+				  for(var i=0;i<data.SignList.length;i++)
+				  {
+					  var signid="signList_"+(i+1);
+					  str_option+='<option value="'+data.SignList[i].SignCode+'" id="'+signid+'">'+data.SignList[i].SignName+'</option>';
+				  }
+		 
+				  str_option+='';
+				  $('#sign_switch').append(str_option); 
+				  $("#sign_switch").selectmenu('refresh', true);
+	
+	              //收缩压的起始值，目标值必须有！
+				if(((data.ChartData.GraphGuide.original==null)||(data.ChartData.GraphGuide.original=="")) && ((data.ChartData.GraphGuide.target==null)||(data.ChartData.GraphGuide.target=="")))
+				{
+					$("#ori_tarDiv").css("display","none");
+				}
+				else
+				{
+			        $("#BPoriginal").text(data.ChartData.GraphGuide.original);
+	                $("#BPtarget").text(data.ChartData.GraphGuide.target);
+					$("#ori_tarDiv").css("display","block");
+				}
+
 			        //✔ ✘ ' 处理 
 				   for(var m=0;m<data.ChartData.GraphList.length;m++)
 				   {	
@@ -102,7 +121,8 @@ function showDetailInfo(event)
 	//alert(event.item.category);
 	
 	//清空弹框内内容
-	$("#ul_targetDetial li").remove();
+	//$("#ul_targetDetial li").remove();
+	$('#ul_targetDetial').find("li").remove();
 	
 	//获取被点击的bullet的时间值，事件格式，许处理成string"20150618"格式传到webservice
 	var dateSelected=event.item.category;
@@ -143,7 +163,6 @@ function showDetailInfo(event)
 			},
         success: function(data) {
 			
-			
 		var str="";
 		str+='<li data-role="list-divider" style="text-align:center;"> <span>'+data.Date+'</span><span style="margin-left:20px;">'+data.WeekDay+'</span></li>';
 		
@@ -154,56 +173,63 @@ function showDetailInfo(event)
 		for(var j=0;j<data.VitalTaskComList.length;j++)
 		{
 			if(data.VitalTaskComList[j].Status=="1"){
-			str+='<p style="margin-left:10px;font-size:14px;"> '+data.VitalTaskComList[j].SignName+'✔<span style="margin-left:10px;"> '+data.VitalTaskComList[j].Value+''+data.VitalTaskComList[j].Unit+'</span> <span style="margin-left:10px;">'+data.VitalTaskComList[j].Time+'</span></p>';
+			str+='<p style="margin-left:10px;font-size:14px;">✔ '+data.VitalTaskComList[j].SignName+'<span style="margin-left:10px;"> '+data.VitalTaskComList[j].Value+''+data.VitalTaskComList[j].Unit+'</span> <span style="margin-left:10px;">'+data.VitalTaskComList[j].Time+'</span></p>';
 			}
 			else
 			{
-				str+='<p style="margin-left:10px;font-size:14px;"> '+data.VitalTaskComList[j].SignName+'✘</p>';
+				str+='<p style="margin-left:10px;font-size:14px;color:red;"><b>✘ '+data.VitalTaskComList[j].SignName+'</b></p>';
 			}
 		}
 		str+='</li>'; 
 		}
 		
-		//生活方式
-		if(data.LifeTaskComList.length>0)
-		{
-			str+=' <li ><h3 style="margin-top:-5px;margin-left:-5px;">生活方式</h3><p style="font-size:14px;">';
-			
-		for(var j=0;j<data.LifeTaskComList.length;j++)
-		{
-			if(data.LifeTaskComList[j].Status=="1")
-			{
-				str+='<span style="margin-left:10px;"> '+data.LifeTaskComList[j].TaskName+'✔</span>';
-				
-			}
-			else
-			{
-				str+='<span style="margin-left:10px;"> '+data.LifeTaskComList[j].TaskName+'✘</span>';
-			}
-			
-		}
-		 str+='</p></li>'; 
-		}
 		
-		//用药
-		if(data.DrugTaskComList.length>0)
-		{
-			str+=' <li ><h3 style="margin-top:-5px;margin-left:-5px;">用药情况</h3>';
+		//其他任务:生活方式和用药情况
+		if(data.TaskComByTypeList.length>0)
+		{			
+			for(var i=0;i<data.TaskComByTypeList.length;i++)
+		    {
+				if(data.TaskComByTypeList[i].TaskType =="生活方式aa")  //手机屏幕较小，还是不同行吧 加aa废弃
+				{
+				  str+=' <li ><h3 style="margin-top:-5px;margin-left:-5px;">'+data.TaskComByTypeList[i].TaskType+'</h3><p style="font-size:14px;">';
+			  
+			 
+				 for(var j=0;j<data.TaskComByTypeList[i].TaskComList.length;j++)
+				 {
+					 
+					 if(data.TaskComByTypeList[i].TaskComList[j].Status=="1")
+					{
+				  str+='<span style="margin-left:10px;"> '+data.TaskComByTypeList[i].TaskComList[j].TaskName+'✔</span>';
+				  
+					}
+					else
+				   {
+				  str+='<span style="margin-left:10px;"> '+data.TaskComByTypeList[i].TaskComList[j].TaskName+'✘</span>';
+				   }
+				}
+				str+='</p></li>'; 
+			  }
 			
-		for(var j=0;j<data.DrugTaskComList.length;j++)
-		{
-			if(data.DrugTaskComList[j].Status=="1")
+			else //用药 药名过长在不同行 与生活方式在同一行样式不一样
 			{
-				str+='<p style="font-size:14px;"><span style="margin-left:10px;"> '+data.DrugTaskComList[j].TaskName+'✔</span></p>';
-				
-			}
-			else
-			{
-				str+='<span style="margin-left:10px;"> '+data.DrugTaskComList[j].TaskName+'✘</span></p>';
-			}
+				str+=' <li ><h3 style="margin-top:-5px;margin-left:-5px;">'+data.TaskComByTypeList[i].TaskType+'</h3>';
+			
+				for(var j=0;j<data.TaskComByTypeList[i].TaskComList.length;j++)
+				{
+					if(data.TaskComByTypeList[i].TaskComList[j].Status=="1")
+					{
+						str+='<p style="font-size:14px;"><span style="margin-left:10px;">✔ '+data.TaskComByTypeList[i].TaskComList[j].TaskName+'</span></p>';
+						
+					}
+					else
+					{
+						str+='<p style="font-size:14px;"><b><span style="margin-left:10px;color:red;">✘ '+data.TaskComByTypeList[i].TaskComList[j].TaskName+'</span></b></p>';
+					}
+				}
+				str+='</li>'; 
+		    }
 		}
-		str+='</li>'; 
-		}
+	 }
      $("#ul_targetDetial").append(str);
     $('#ul_targetDetial').listview('refresh');  
 	$("#popupDetail").popup("open");	
@@ -396,7 +422,7 @@ function animate(a,b){
                             bulletBorderThickness : 2,
                             bulletBorderAlpha : 1,		
 							showBalloon: true,		
-                            balloonText: "",
+                            balloonText: "[[DrugDescription]]",
 				            //labelText:"[[drugDescription]]"
 
 						}],
@@ -430,7 +456,9 @@ function animate(a,b){
 					valueBalloonsEnabled: true,  //上下值同时显现
 					//graphBulletSize: 1,
 					},
-			chartScrollbarSettings: {  //时间缩放面板				    
+			chartScrollbarSettings: {  //时间缩放面板
+			            zoomable:false,
+					    pan:true,				    
 						enabled:true,
 						position: "top",
 					    autoGridCount: true, //默认
@@ -478,7 +506,8 @@ function animate(a,b){
 
 			$("#alertTextDiv").css("display","none");
 			$("#original_target").css("visibility","hidden");
-			$("#yEPlan").css("visibility","hidden");
+			//$("#yEPlan").css("visibility","hidden");
+			document.getElementById("chartdiv").innerHTML="";
 			$("#graph_loading").css("display","block");
 			
 			},
@@ -504,39 +533,45 @@ function animate(a,b){
 				  if(data.OtherTasks=="1")  //除体征测量外，有其他任务
 				  {
 			          createStockChart(data);
+					  chart.panels[1].addListener("clickGraphItem",showDetailInfo); 
 				  }
 				  else  //没有其他任务
 				  {
 					  createStockChartNoOther(data);
+				  }  
+				  
+				  //切换上部图title
+                if((ItemCode=="Bloodpressure|Bloodpressure_1")||(ItemCode=="Bloodpressure|Bloodpressure_2"))
+				  {
+					  chart.panels[0].title="血压 （单位：mmHg）";
 				  }
+				  else if(ItemCode=="Pulserate|Pulserate_1")
+				  {
+					  chart.panels[0].title="脉率 （单位：次/分）";
+				  }
+				  chart.validateNow();
+
 			}
 
-	        //chart.panels[0].valueAxes[0].guides=data.GuideList
-	       // chart.panels[0].valueAxes[0].minimum=data.GraphGuide.minimum;
-			//chart.panels[0].valueAxes[0].maximum=data.GraphGuide.maximum;
-	       //chart.dataSets[0].dataProvider= data.GraphList;
-			
-	        //chart.validateNow();
-           // chart.validateData();
-           //chart.animateAgain();  //只适用于serial
-	      //chart.write("chartdiv");
 
            $("#graph_loading").css("display","none");
 		   $("#yEPlan").css("visibility","visible");
 		    
 			 //图上说明	  放在后面 因为yEPlan包含了它 yEPlan也在隐藏和显示操作
-		    if(ItemCode=="Pulserate_1")
-		    {
-				//隐藏
-				$("#original_target").css("visibility","hidden");
-		    }
-		    else
-		    { 
-                $("#original_target").css("visibility","visible");
-			    $("#BPoriginal").text(data.GraphGuide.original);
-	            $("#BPtarget").text(data.GraphGuide.target);
-		    }
-			 
+		     //类似脉率没有初始值和目标值，则隐藏
+				  if(((data.GraphGuide.original==null)||(data.GraphGuide.original=="")) && ((data.GraphGuide.target==null)||(data.GraphGuide.target=="")))
+				{
+					$("#ori_tarDiv").css("display","none");
+				}
+				else
+				{
+					//$("#originalDiv").css("visibility","visible");
+				    //$("#targetDiv").css("visibility","visible");
+			        $("#BPoriginal").text(data.GraphGuide.original);
+	                $("#BPtarget").text(data.GraphGuide.target);
+					$("#ori_tarDiv").css("display","block");
+				}
+				  
 			   
 			 }, 
        error: function(msg) {
@@ -689,6 +724,8 @@ function animate(a,b){
 					fillAlpha:0.8
 				},
 				chartCursorSettings:{
+					zoomable:false,
+					pan:true,
 					usePeriod: "7DD",
 					//pan:false,
 				    //zoomable:true,
@@ -747,12 +784,12 @@ function GetDetails()
 }
 
 function GetSignsDetailByPeriod(){
+	
 	 var Start_mark=0;
-	 if(StartDate==0)
+	 if(StartDate_detail==0)
 	 {
 		 var Start_mark=1;
 	 }
-	
 	$.ajax({  
         type: "POST",
         dataType: "json",
@@ -761,7 +798,7 @@ function GetSignsDetailByPeriod(){
 		//async:false,
         data: {PatientId:PatientId, 
 		        Module:Module,
-				StartDate:StartDate, 
+				StartDate:StartDate_detail, 
 		        Num:7,
 			  },
 		beforeSend: function(){
@@ -794,7 +831,7 @@ function GetSignsDetailByPeriod(){
 			     $("#ul_target").append(str);
 			    //$("#ul_target").trigger('create');
 			     $('#ul_target').listview('refresh');
-				  StartDate=data.NextStartDate; 
+				  StartDate_detail=data.NextStartDate; 
 				    
 				  $("#detail_loading").css("display","none"); 
 				 $("#detail_content").css("display","block");
