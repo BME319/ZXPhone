@@ -8,7 +8,9 @@
 	}*/
 
  function GetImplementationForPhone(PatientId, Module){
-
+	 chart="";
+     document.getElementById("chartdiv").innerHTML="";
+	 
 	$.ajax({  
         type: "POST",
         dataType: "json",
@@ -44,10 +46,11 @@
                    //进度、依从率
 			       //animate(data.ProgressRate, data.RemainingDays);
 				   
-				   var proText="计划进度："+data.ProgressRate+"%";
-		           $(".last").find("span").text(proText);
+				     var proText="计划进度："+data.ProgressRate+"%";
+		          // $(".last").find("span").text(proText);
+				   $("#planRate").text(proText);
 				   
-			       var RemainingDays="距离计划结束还有"+data.RemainingDays+"天";
+			       var RemainingDays="，离结束还有"+data.RemainingDays+"天";
 			       $("#RemainingDays").text(RemainingDays);
 	
 	               //体征切换下拉框
@@ -773,8 +776,7 @@ function animate(a,b){
 }
 
 /*BPdetail 函数*/
-
-function GetDetails()
+function GetDetailsReload()
 {
 	$("#noDetail").css("display","none");
 	$("#detail_content").css("display","none");
@@ -784,6 +786,22 @@ function GetDetails()
 	
 	StartDate_detail=0; 
    GetSignsDetailByPeriod();
+}
+
+
+function GetDetails()
+{
+	if(StartDate_detail==0)
+	{
+	$("#noDetail").css("display","none");
+	$("#detail_content").css("display","none");
+	$("#detail_loading").css("display","block");
+	
+	$("#ul_target li").remove(); 
+	
+	StartDate_detail=0; 
+   GetSignsDetailByPeriod();
+	}
 }
 
 function GetSignsDetailByPeriod(){
@@ -841,11 +859,13 @@ function GetSignsDetailByPeriod(){
 				 
 				  if(data.NextStartDate == -1)
 				 {
-					$("#btn_getmore").css("visibility","hidden");
+					//$("#btn_getmore").css("visibility","hidden");
+					$("#btn_getmore").css("display","none"); 
 				}
 				else
 				{
-					$("#btn_getmore").css("visilibity","visible");
+					//$("#btn_getmore").css("visilibity","visible");
+				 $("#btn_getmore").css("display","block");
 				}
 				  
 			    
@@ -855,15 +875,16 @@ function GetSignsDetailByPeriod(){
 				if(Start_mark== 1)
 				{
 					
-					$("#btn_getmore").css("visibility","hidden");
+					//$("#btn_getmore").css("visibility","hidden");
+					$("#btn_getmore").css("display","none");
 					$("#detail_loading").css("display","none"); 
 				    $("#noDetail").css("display","block");
 				}
 				else
 				{
-					$("#btn_getmore").css("visibility","hidden");
+					//$("#btn_getmore").css("visibility","hidden");
 					$("#detail_loading").css("display","none"); 
-				    //$("#btn_getmore").css("display","none");
+				    $("#btn_getmore").css("display","none");
 				}
 			}
 		                  }, 
