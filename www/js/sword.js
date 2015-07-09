@@ -185,7 +185,7 @@ function GetTasksByDate(PatientId, clickday, PlanNo){
 		  type: "POST",
 		  dataType: "xml",
 		  timeout: 30000,  
-		  url: 'http://'+ serverIP+serviceName+'/GetTasksByIndate',
+		  url: 'http://'+ serverIP +'/'+serviceName+'/GetTasksByIndate',
 		  async:false,
 		  data: {PatientId:PatientId,
 				 Indate:clickday,
@@ -255,12 +255,11 @@ function GetCompliance(PatientId, Module, d, first)
 		  type: "POST",
 		  dataType: "xml",
 		  timeout: 30000,  
-		  url: 'http://'+ serverIP+'/'+serviceName+'/GetPlanList34ByM',
+		  url: 'http://'+ serverIP +'/'+serviceName+'/GetPlanList34ByM',//获取该病人所有的计划
 		  async:false,
 		  data: {PatientId:PatientId,
-				 Module:Module},//输入变量
-		  beforeSend: function(){
-			  },
+				 Module:"M1"},//输入变量
+		  beforeSend: function(){},
 		  success: function(result)
 		  { 
 				var i = 0;
@@ -272,8 +271,8 @@ function GetCompliance(PatientId, Module, d, first)
 					i++;
 				}); 
 				//alert(PlanNumber);
-				if(d>=Start[0] && d<=End[0])//有正在执行的计划,把PlanNumber[0]到PlanNumber[a]这些本月的计划取出其依从率及对应的日期
-				{
+				if(d>=Start[0] && d<=End[0])//今天在某计划的开始和结束之间，说明有正在执行的计划,把PlanNumber[0]到PlanNumber[a]这些本月的计划取出其依从率及对应的日期
+				{							//默认如果有正在执行的计划，则后面无计划	
 					//alert("有正在执行的计划")
 					for(var a=0 ; a<=PlanNumber.length; a++)	
 					{
@@ -287,7 +286,7 @@ function GetCompliance(PatientId, Module, d, first)
 								type: "POST",
 								dataType: "xml",
 								timeout: 30000,  
-								url: 'http://'+ serverIP+serviceName+'/GetAllComplianceListByPeriod',
+								url: 'http://'+ serverIP +'/'+serviceName+'/GetAllComplianceListByPeriod',
 								async:false,
 								data: {PatientId:PatientId,
 									   PlanNo:PlanNumber[a],
@@ -331,7 +330,7 @@ function GetCompliance(PatientId, Module, d, first)
 								type: "POST",
 								dataType: "xml",
 								timeout: 30000,  
-								url: 'http://'+ serverIP +serviceName+'/GetAllComplianceListByPeriod',
+								url: 'http://'+ serverIP +'/'+serviceName+'/GetAllComplianceListByPeriod',
 								async:false,
 								data: {PatientId:PatientId,
 									   PlanNo:PlanNumber[b],
@@ -357,9 +356,8 @@ function GetCompliance(PatientId, Module, d, first)
 				
 				//经过上面的if else之后，该月的依从率情况都在Compliance和Date数组中按序排好了				
 				if(first<=date[0])//计划没有跨月，可在当前月全部显示
-			{
-				
-				for(var a=0;a<=i;a++)
+				{				
+					for(var a=0;a<=i;a++)
 				{
 					if(date[a]<=first+31)//不让五月一号的显示在四月1号
 					{
@@ -401,10 +399,10 @@ function GetCompliance(PatientId, Module, d, first)
 						}
 					}
 			    }
-			}
-			else
-			{
-				for(var k=0;k<=i;k++)
+				}
+				else
+				{
+					for(var k=0;k<=i;k++)
 				{
 					if(date[k]==first){break;}
 				}
@@ -448,9 +446,9 @@ function GetCompliance(PatientId, Module, d, first)
 					}
 			    }
 				
-			}
+				}
 		  }, 
-		  error: function(msg) {alert("取某病人所有PlanNo有误");}
+		  error: function(msg) {alert("GetCompliance有误");}
 	  });
 	  return option;	
 }
@@ -469,4 +467,3 @@ function LastNextMonth()
     var d = year*10000+month*100+day;//获取当月最后一天日期
 	GetCompliance(PatientId, Module, d, first);
 } 
- 
