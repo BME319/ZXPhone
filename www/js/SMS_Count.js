@@ -12,12 +12,23 @@ $(document).ready(function(event){
 	WsPush();
 })
 
-window.onunload = function () //断开连接
+window.onunload = function () //断开连接 
 {
 	SocketCreated = false;
 	isUserloggedout = true;
-	ws.close();
+	//ws.close();
+	ws.send("");
 }
+
+
+window.onbeforeunload = function () //断开连接 
+{
+	SocketCreated = false;
+	isUserloggedout = true;
+	//ws.close();
+	ws.send("");
+}
+
 
 function WsPush () //建立连接
 {
@@ -54,7 +65,7 @@ function WsPush () //建立连接
 
 
  function WSonOpen() {
-	ws.send("login:" + window.localStorage.getItem("ID"));   
+	ws.send("login:" + window.localStorage.getItem("ID"));
  };
 
  function WSonMessage(event) {
