@@ -121,20 +121,16 @@
               <p id="RemainingDays" style="font-size:14px;color:#0048CC;"></p>
            </div>
        </div>-->
-       
-        <div id="proRate" style="margin-top:-5px;">
+        <div id="proRate" style="margin-top:-20px;">
          <dl class="barbox" >
 		    
-		    <dd class="last" style="margin-left:0px;"><span>0%</span></dd> 
+		    <dd class="last" style="margin-left:0px;"><span id="planRate"></span><span id="RemainingDays"></span></dd> 
 	     </dl>
-         <div align="center" style="margin-top:-10px;">
-            <p id="RemainingDays" style="font-size:14px;color:#0048CC;"></p>
-         </div>
          </div>
 
        
        
- <div data-role="popup" id="popupDetail" class="ui-content" style="width:250px;padding-left: 1px;padding-right: 1px;padding-bottom: 0px;padding-top: 1px;" data-dismissible="false"><a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">关闭</a><div style="height:230px;overflow:auto;"><ul data-role="listview" data-inset="true" id="ul_targetDetial" style="width:100%;margin-top: 0px;"></ul></div></div>
+ <div data-role="popup" id="popupDetail" class="ui-content" style="width:280px;padding-left: 1px;padding-right: 1px;padding-bottom: 0px;padding-top: 1px;" data-dismissible="false"><a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">关闭</a><div style="height:230px;overflow:auto;"><ul data-role="listview" data-inset="true" id="ul_targetDetial" style="width:100%;margin-top: 0px;"></ul></div></div>
         
    </div>
      
@@ -168,12 +164,12 @@
   <div data-role="header">
     <h1>近一周体征数据</h1>
                 <div class="ui-btn-right">
-            <a id="Refresh" href="#" data-role="button" data-icon="refresh" data-iconpos="notext" onClick="GetDetails()">Refresh</a>
+            <a id="Refresh" href="#" data-role="button" data-icon="refresh" data-iconpos="notext" onClick="GetDetailsReload()">Refresh</a>
         </div>
     <div data-role="navbar">
           <ul>
             <li><a href="javascript:history.go(-1);" data-icon="home" data-role="button">目标主页</a></li>
-           <li><a href="#pagetwo" data-role="button" data-icon="grid" onclick="GetDetails()" class="ui-btn-active ui-state-persist" >查看详细</a></li>
+           <li><a href="#pagetwo" data-role="button" data-icon="grid" onclick="GetDetailsReload()" class="ui-btn-active ui-state-persist" >查看详细</a></li>
         </ul>
     </div> 
   </div>
