@@ -10,51 +10,55 @@
 <link rel="stylesheet" href="css/CommonStyle.css">
 <script src="jquery-mobile/jquery-2.1.3.js"></script>
 <script src="jquery-mobile/jquery.mobile-1.4.2.js"></script>
-<script type="text/javascript" src="js/sword.js"></script>
+
 <script type="text/javascript" src="js/CommonUtility.js"></script>
 
 <body>
 
 <div data-role="page">
-<div data-role="header" style="height:40px;">
-                            <a href="javascript:history.go(-1);" data-icon="back" data-iconpos="notext" data-shadow="false" data-iconshadow="false" >返回</a> 
-
-        	<h2 style="margin-top:-38px" id="title">过往依从率</h2>
+	<div data-role="header" style="height:40px;">
+        <a href="javascript:history.go(-1);" data-icon="back" data-iconpos="notext" data-shadow="false" data-iconshadow="false" ></a> 
+		<h1 id="title">过往依从率</h1>
     </div>
-<div data-role="content">
-<div class="Calendar">
-  <div id="idCalendarPre" ><span >&lt;&lt;</span></div>
-  <div id="idCalendarNext">&gt;&gt;</div>
-  <span id="idCalendarYear" >2008</span>年 <span id="idCalendarMonth">8</span>月
-  <table cellspacing="0">
-    <thead>
-      <tr>
-        <td>日</td>
-        <td>一</td>
-        <td>二</td>
-        <td>三</td>
-        <td>四</td>
-        <td>五</td>
-        <td>六</td>
-      </tr>
-    </thead>
-    <tbody id="idCalendar" onclick="oneday(event)" >
-    </tbody>
-  </table>
-</div>
-<textarea id="tasktext" data-role="none" id="hyperclass" name="" cols="" rows="" style="font-size:20px"></textarea>
-</div>
+	<div data-role="content">
+		<div class="Calendar">
+  			<div id="idCalendarPre" ><span >&lt;&lt;</span></div>
+  			<div id="idCalendarNext">&gt;&gt;</div>
+  			<span id="idCalendarYear" >2008</span>年 <span id="idCalendarMonth">8</span>月
+  			<table cellspacing="0">
+    			<thead>
+      				<tr>
+        				<td>日</td>
+        				<td>一</td>
+        				<td>二</td>
+        				<td>三</td>
+        				<td>四</td>
+       					<td>五</td>
+        				<td>六</td>
+      			    </tr>
+    			</thead>
+    				<tbody id="idCalendar" onclick="oneday(event)" ></tbody>
+  			</table>                           
+                <div  style="background-color: #0F3; width: 25%; height: 10%;float:left">完全依从</div>
+                <div  style="background-color: #F90; width: 25%; height: 10%;float:left;margin-left:10%">部分依从</div>
+                <div  style="background-color: #F00; width: 25%; height: 10%;float:left;margin-left:10%">完全不依从</div>
+		</div>
+        
+
+        
+		<div><textarea id="tasktext" data-role="none" id="hyperclass" name="" cols="" rows="" style="font-size:20px"></textarea></div>
+	</div>
 </div>
 
 </body>
 <script type="text/javascript">
+//localStorage.setItem("ID", "PID201506170005");
 var PatientId=window.localStorage.getItem("ID");
 var PlanNo=window.localStorage.getItem("PlanNo");
-var Module = window.localStorage.getItem("Module");
+var Module = "M1";
 var PlanNumber = new Array();
 var Start = new Array();
 var End = new Array();
-
 $(document).ready(function (){
 var cale = new Calendar
 ("idCalendar", 
@@ -63,17 +67,13 @@ var cale = new Calendar
 	onFinish: function()
 	{
 		hehe("idCalendarYear").innerHTML = this.Year; hehe("idCalendarMonth").innerHTML = this.Month;
-		var flag = [];
-		for(var i = 0, len = flag.length; i < len; i++)
-		{
-			this.Days[flag[i]].innerHTML = "<a href='javascript:void(0);' onclick=\"alert('日期是:"+this.Year+"/"+this.Month+"/"+flag[i]+"');return false;\">" + flag[i] + "</a>";
-	   }
     }
 }
 );
 //调取上个月和下个月的情况
-hehe("idCalendarPre").onclick = function(){ cale.PreMonth(); LastMonth();clear()}
-hehe("idCalendarNext").onclick = function(){ cale.NextMonth(); Read(); clear()}
+hehe("idCalendarPre").onclick = function(){ cale.PreMonth(); LastNextMonth();clear()}
+hehe("idCalendarNext").onclick = function(){ cale.NextMonth(); LastNextMonth(); clear()}
 });
 </script>
+<script type="text/javascript" src="js/sword.js"></script>
 </html>
