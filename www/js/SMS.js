@@ -130,8 +130,18 @@ window.onunload = function () //断开连接
 {
 	SocketCreated = false;
 	isUserloggedout = true;
-	ws.close();
+	//ws.close();
+	ws.send();
 }
+
+window.onbeforeunload = function () //断开连接 
+{
+	SocketCreated = false;
+	isUserloggedout = true;
+	//ws.close();
+	ws.send("");
+}
+
 
 //window.onload = function() //建立连接
 function WsPush ()
