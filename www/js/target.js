@@ -852,7 +852,9 @@ function GetSignsDetailByPeriod(){
 				 }
 			     $("#ul_target").append(str);
 			    //$("#ul_target").trigger('create');
-			     $('#ul_target').listview('refresh');
+			     //$('#ul_target').listview('refresh');
+				 setTimeout(function(){$('#ul_target').listview('refresh');},500);
+				 
 				  StartDate_detail=data.NextStartDate; 
 				    
 				  $("#detail_loading").css("display","none"); 
