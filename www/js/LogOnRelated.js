@@ -62,7 +62,7 @@ function SubmitForm(){
 									  var UserId = $(result).find("string").text();
 									  window.localStorage.setItem("ID",UserId);
 									  window.localStorage.setItem("Key","LogOn");
-	
+									  window.localStorage.setItem("PatientId",UserId);
 									  //alert(UserId);
 									  $.ajax({
 										  type: "POST",
