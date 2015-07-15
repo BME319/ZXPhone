@@ -16,7 +16,7 @@
         dataType: "json",
 		//timeout: 30000,  
 		url: 'http://'+ serverIP +'/'+serviceName+'/GetImplementationForPhone',
-		//async:false,
+		async:false,
         data: {PatientId:PatientId, 
 		        Module:Module,
 			  },
@@ -93,7 +93,8 @@
 				   {
 			          createStockChart(data.ChartData);
 					  //监听下部图的bullet点 的点击事件
-					  chart.panels[1].addListener("clickGraphItem",showDetailInfo); 
+					  //chart.panels[1].addListener("clickGraphItem",showDetailInfo); 
+					  setTimeout(function(){chart.panels[1].addListener("clickGraphItem",showDetailInfo); },500);
 					  //监听下部图的横坐标lable 的点击事件
 					 //chart.panels[1].categoryAxis.addListener("clickItem",showDetailInfo);
 				   }
@@ -504,7 +505,7 @@ function animate(a,b){
         dataType: "json",
 		//timeout: 30000,  
 		url: 'http://'+ serverIP +'/'+serviceName+'/GetSignInfoByCode',
-		//async:false,
+		async:false,
         data: {PatientId:PatientId, 
 		        PlanNo:NowPlanNo,
 				ItemCode:ItemCode, 
@@ -816,7 +817,7 @@ function GetSignsDetailByPeriod(){
         dataType: "json",
 		//timeout: 30000,  
 		url: 'http://'+ serverIP +'/'+serviceName+'/GetSignsDetailByPeriod',
-		//async:false,
+		async:false,
         data: {PatientId:PatientId, 
 		        Module:Module,
 				StartDate:StartDate_detail, 
