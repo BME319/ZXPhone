@@ -94,7 +94,7 @@
 			          createStockChart(data.ChartData);
 					  //监听下部图的bullet点 的点击事件
 					  //chart.panels[1].addListener("clickGraphItem",showDetailInfo); 
-					  setTimeout(function(){chart.panels[1].addListener("clickGraphItem",showDetailInfo); },500);
+					  setTimeout(function(){chart.panels[1].addListener("clickGraphItem",showDetailInfo); },1000);
 					  //监听下部图的横坐标lable 的点击事件
 					 //chart.panels[1].categoryAxis.addListener("clickItem",showDetailInfo);
 				   }
@@ -131,7 +131,8 @@ function showDetailInfo(event)
 	//清空弹框内内容
 	//$("#ul_targetDetial li").remove();
 	$('#ul_targetDetial').find("li").remove();
-	
+	document.getElementById("ul_targetDetial").innerHTML="";
+	$('#ul_targetDetial').empty();
 	//获取被点击的bullet的时间值，事件格式，许处理成string"20150618"格式传到webservice
 	var dateSelected=event.item.category;
 	var theyear=dateSelected.getFullYear();
@@ -180,7 +181,7 @@ function showDetailInfo(event)
 			str+=' <li ><h3 style="margin-top:-5px;margin-left:-5px;">体征测量</h3>';
 		for(var j=0;j<data.VitalTaskComList.length;j++)
 		{
-			if(data.VitalTaskComList[j].TaskStatus=="1"){
+			if(data.VitalTaskComList[j].Status=="1"){
 			str+='<p style="margin-left:10px;font-size:14px;white-space:pre-wrap;">✔ '+data.VitalTaskComList[j].SignName+'<span style="margin-left:10px;"> '+data.VitalTaskComList[j].Value+''+data.VitalTaskComList[j].Unit+'</span> <span style="margin-left:10px;">'+data.VitalTaskComList[j].Time+'</span></p>';
 			}
 			else
@@ -368,10 +369,11 @@ function animate(a,b){
 							//type: "line",
 							id: "graph1",
                             valueField: "SignValue",
-							lineColor: "#7f8da9",
-							lineColorField:"SignColor",
-							lineThickness : 0,
-							lineAlpha:0,
+							lineColor: "#EA7500",
+							//lineColorField:"SignColor",
+							lineThickness : 3,
+							lineAlpha:1,
+							//connect:false,
 							bullet: "round",
 							bulletField:"SignShape",
 							bulletSize:12,
@@ -657,7 +659,7 @@ function animate(a,b){
 				//autoMargins:false,
 				panels: [{
 						title: "血压 （单位：mmHg）",
-						showCategoryAxis: false,
+						showCategoryAxis: true,
 						percentHeight: 70,
 						autoMargins:false,
 						//marginTop:300,
@@ -693,10 +695,12 @@ function animate(a,b){
 							//type: "line",
 							id: "graph1",
                             valueField: "SignValue",
-							lineColor: "#7f8da9",
-							lineColorField:"SignColor",
-							lineThickness : 0,
-							lineAlpha:0,
+							//lineColor: "#7f8da9",
+							lineColor: "#EA7500",
+							//lineColorField:"SignColor",
+							lineThickness : 3,
+							lineAlpha:1,
+							//connect:false,
 							bullet: "round",
 							bulletField:"SignShape",
 							bulletSize:12,
@@ -852,7 +856,9 @@ function GetSignsDetailByPeriod(){
 				 }
 			     $("#ul_target").append(str);
 			    //$("#ul_target").trigger('create');
-			     $('#ul_target').listview('refresh');
+			     //$('#ul_target').listview('refresh');
+				 setTimeout(function(){$('#ul_target').listview('refresh');},500);
+				 
 				  StartDate_detail=data.NextStartDate; 
 				    
 				  $("#detail_loading").css("display","none"); 

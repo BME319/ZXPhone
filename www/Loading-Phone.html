@@ -78,14 +78,14 @@
 												if (Role == "Patient")
 												{
 													window.localStorage.setItem("AutoLogOn","Yes");
-													Patient = 1;
+													isPatient = 1;
 													//alert("登陆成功");	
 													setTimeout(function(){
 														location.href = "TaskMenu.html";
 													},1000)
 												}
 											});
-											if (Patient == 0)
+											if (isPatient == 0)
 											{
 												location.href = "LogOn-Phone.html";
 											}
