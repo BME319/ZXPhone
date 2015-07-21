@@ -17,6 +17,7 @@
 		var SetDFlag = 0;
 		var SetPFlag = 0;
 		var jump = 0;
+		var LastSBP = "";
 		
 		$(document).ready(function(event){
 			$('#SBPget').blur(function (){
@@ -64,7 +65,8 @@
 					  {
 							LS = "";  
 					  }	
-					  $('#SBPget').val(LS);		    
+					  $('#SBPget').val(LS);	
+					  LastSBP = LS;    
 				  }, 
 				  error: function(msg) {alert("Error: GetLatestSbpByPatientId");}
 			});
@@ -79,6 +81,10 @@
 				  beforeSend: function(){},
 				  success: function(result) {
 					  var LD = $(result).find("string").text();
+					   if (isNaN(LD) == true)
+					  {
+							LD = "";  
+					  }	
 					  $('#DBPget').val(LD);		    
 				  }, 
 				  error: function(msg) {alert("Error: GetLatestDbpByPatientId");}
@@ -94,6 +100,10 @@
 				  beforeSend: function(){},
 				  success: function(result) {
 					  var LP = $(result).find("string").text();
+					   if (isNaN(LP) == true)
+					  {
+							LP = "";  
+					  }	
 					  $('#PulseF').val(LP);		    
 				  }, 
 				  error: function(msg) {alert("Error: GetLatestPulseByPatientId");}
@@ -295,7 +305,7 @@
 						}
 						setTimeout(function () {
 						$("#DeviceList").empty();
-								document.getElementById("alert3").innerHTML = "设备名称";
+								document.getElementById("alert3").innerHTML = "已配对设备";
 								var ss = str.split('"');
 								var No = str.split('name');
 								var DeviceNo = No.length - 1; 
@@ -319,7 +329,7 @@
 										//alert(name);
 										
 										//$("#DeviceList").append("<p id='"  + add + "' onclick = 'connect()'>" + name + "</p>");
-										$("#DeviceList").append("<p id='"  + add + "' class = 'devicelist'>" + name + "</p>");	
+										$("#DeviceList").append("<a id='"  + add + "' class = 'devicelist' data-role = 'button'>" + name + "</a>");	
 										
 									}
 									$(".devicelist").click(function ()
@@ -564,27 +574,61 @@
 				   var DBP = results[18];
 				   var PulseF = results[20];
 				   
-				   if ( SBP!= "" && DBP != "" && PulseF != "")
+				   //var AgainFlag = 0;
+				   if ( isNaN(SBP) == false && isNaN(DBP) == false && isNaN(PulseF) == false)
 				   {
 					   $('#SBPget').val(SBP);
 					   $('#DBPget').val(DBP);
 					   $('#PulseF').val(PulseF);
-					   document.getElementById("alertS").innerHTML = "舒张压：" + $('#SBPget').val();
-					   document.getElementById("alertD").innerHTML = "收缩压：" + $('#DBPget').val();
-					   document.getElementById("alertP").innerHTML = "脉率：" + $('#PulseF').val();
-					   //resetBT();
-					   $( "#popdiv8" ).on({
-						  popupafterclose: function() {
-							  setTimeout(function() { 
-							  	Test1();							
-							  	$( "#popdiv5" ).popup( "open" ) 
-							  //resetBT();
-							  }, 100 );
-						  }
-					  });	
-					  $("#popdiv8").popup("close");
+					   document.getElementById("alertS").innerHTML = "您的收缩压：" + $('#SBPget').val();
+					   document.getElementById("alertD").innerHTML = "您的舒张压：" + $('#DBPget').val();
+					   document.getElementById("alertP").innerHTML = "您的脉率：" + $('#PulseF').val();
+					   if (SBP < 160)
+					   {
+						   if (LastSBP != "" )
+						   {
+							 var WarningFlag = SBP/LastSBP;
+							 if (WarningFlag < 1)
+							 {
+								document.getElementById("alertW").innerHTML = "您的血压比上次低了，做得很好，请继续保持!"; 
+							 }
+							 else if (WarningFlag >= 1 && WarningFlag <= 1.03)
+							 {
+								document.getElementById("alertW").innerHTML = "您的血压比较稳定，请在保持的同时，努力把血压降下去!";
+							 }
+							 else if (WarningFlag > 1.03 && WarningFlag <= 1.1)
+							 {
+								document.getElementById("alertW").innerHTML = "您的血压比上次高了不少！请注意个人饮食及生活方式！";
+							 }
+							 else if (WarningFlag > 1.1)
+							 {
+								document.getElementById("alertW").innerHTML = "您的血压比上次高了很多！请确认是否需要联系您的医生！";
+								//var AgainFlag = 1;
+							 }
+						   }
+					   }
+					   else
+					   {
+						   document.getElementById("alertW").innerHTML = "您的血压已超出了正常范围！请重新测量！如果多次测量仍超出正常范围，请尽快联系您的医生！";
+					   }
+					}
+					else
+					{
+						document.getElementById("alertW").innerHTML = "数据获取错误，请重新测量！";
+					}
+					 //resetBT();
+					 $( "#popdiv8" ).on({
+						popupafterclose: function() {
+							setTimeout(function() { 
+							  Test1();							
+							  $( "#popdiv5" ).popup( "open" ) 
+							//resetBT();
+							}, 100 );
+						}
+					});	
+					$("#popdiv8").popup("close");
 				  //return null;
-				  }
+				  
 				  
  					//alert(SBP);
 				   //alert(DBP);

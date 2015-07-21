@@ -281,7 +281,7 @@ function ListDevice() {
 						//alert(name);
 						
 						//$("#DeviceList").append("<p id='"  + add + "' onclick = 'connect()'>" + name + "</p>");
-						$("#Devicelist2").append("<p id='"  + add + "' class = 'devicelist' style = 'text-align: left' value = " +name+ ">" + name + "</p>");	
+						$("#Devicelist2").append("<a id='"  + add + "' class = 'devicelist'  data-role = 'button' style = 'text-align: left' value = " +name+ ">" + name + "</a>");	
 						
 					}
 					
@@ -295,7 +295,8 @@ function ListDevice() {
 						setTimeout(function(){
 							//alert(1);
 							$("#Devicelist1").append("<p id='"  + Add + "' class = 'devicelist' style = 'text-align: left'>" + Name + "</p>");
-							$("#DeviceList1").trigger("create");	
+							$("#DeviceList1").trigger("create");
+							//alert(r);	
 						},1500);
 					 });
 					$("#DeviceList2").trigger("create");
@@ -311,7 +312,7 @@ function ListDevice() {
 		var extraInfo = cordova.require('cn.edu.zju.bme319.cordova.ExtraInfo');
 		extraInfo.pairBT(add,
 		function(r){
-				
+				//alert(r);
 			//setTimeout(function() {
 //				if (r == "true")
 //				{

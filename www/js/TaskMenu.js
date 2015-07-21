@@ -1,5 +1,6 @@
 ﻿	var PatientURL;
 	var DoctorURL;
+	var ImageAddressIP = "http://10.13.22.66:8088"; 
 
 
 	function GetPatientName(PID){
@@ -68,6 +69,13 @@
 	function UpdateStatus(){
 		//_Date = 20150415; //实际使用请去掉该句
 		SetComplianceDetail(1);
+		if (_Id == 1)
+		{
+			setTimeout(function() {
+				_Id = 2;
+				SetComplianceDetail(1);
+			}, 100);
+		}
 	}
 	
 	function SetComplianceDetail(status){
@@ -175,6 +183,14 @@
 					TaskStatus = $(this).children("Status").text();
 					TaskId = $(this).children("Id").text();
 					Instruction = $(this).children("Instruction").text();
+					
+					if (TaskName != "舒张压")
+					{
+						if (TaskName == "收缩压")
+						{
+							TaskName = "血压";
+						}	
+					
 //					var TypeName;
 					var ColorName_1;
 					var ColorName_2;
@@ -217,8 +233,10 @@
 					}
 					var task_str = '<li><a href="' + HrefName + '" style="background-color:' + ColorName_1 + '"><img src="' + 'img/' + TaskType + '.png' + '"><h2>'+ TaskName+ '</h2><p>' + Instruction.replace(/，/,"&nbsp") + '</p></a>' + '<a href="' + DoneFlag + '" data-rel="popup" ' + 'style="background-color:' + ColorName_2 + '" class="ui-btn ui-btn-icon-notext ' + IconStyle + ' ui-btn-a"' + ' data-position-to="window" data-transition="pop"' + ' onclick="GetId(this)"' + ' id="' + TaskId  + '">' +'</a></li>';
 					$("#TaskList").append(task_str);
+					}
 				})
 				$("#TaskList").listview("refresh");
+				
 			},
 			error: function(msg) {alert("GetTaskListbyStatus Error!");}
 		});
@@ -255,10 +273,10 @@
 	function GetModule(PID){
 		window.localStorage.setItem("Module","M1");
 		window.localStorage.setItem("IPAddress", "http://10.13.22.66:8088");
-		window.localStorage.setItem("PatientFile", "/PersonalPhoto/Patient");
-		window.localStorage.setItem("DoctorFile", "/PersonalPhoto/Doctor");
-		PatientURL = window.localStorage.getItem("IPAddress")+window.localStorage.getItem("PatientFile")+"/";
-		DoctorURL = window.localStorage.getItem("IPAddress")+window.localStorage.getItem("DoctorFile")+"/";
+		window.localStorage.setItem("PatientFile", "/PersonalPhoto");
+		window.localStorage.setItem("DoctorFile", "/PersonalPhoto");
+		PatientURL = ImageAddressIP+window.localStorage.getItem("PatientFile")+"/";
+		DoctorURL = ImageAddressIP+window.localStorage.getItem("DoctorFile")+"/";
 	}
 	
 	function BacktoLogOn(){
