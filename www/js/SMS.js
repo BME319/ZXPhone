@@ -77,11 +77,11 @@ var MaxHt = 0; //输入框最大高度
 
 
 
-var ws; //websocket
+/*var ws; //websocket
 var wsServerIP = serverIP.substring(0, 11) + ":4141/chat"; 
 var SocketCreated = false;
 var isUserloggedout = false;
-
+*/
 
 $(document).ready(function(event){
   $("#DoctorName").html(window.localStorage.getItem("DoctorName"));
@@ -96,7 +96,8 @@ $(document).ready(function(event){
   
   document.getElementById('SMSContent').style.height = "47px"; //设定文本域初始高度
   $('#GenaralField').height(DocHeight-160); //设定文档高度
-  WsPush();
+  //WsPush();
+  CHAT.usernameSubmit();
   SetSMSRead(ThisUserId, TheOtherId); //将消息变为已读
 })
 
@@ -124,8 +125,8 @@ function getLocalmachineIPAddress()
 	return Ip;	  
 }
 
-
-//消息推送
+//***************************************************************************
+/*//消息推送
 window.onunload = function () //断开连接
 {
 	SocketCreated = false;
@@ -199,9 +200,62 @@ function WsPush ()
 
  function WSonError() {
 	console.log("远程连接中断。", "ERROR");
- };
+ };*/
  
  //**************************************************************************************
+ 
+ //************************************
+var WsUserId = window.localStorage.getItem("ID");
+var WsUserName = window.localStorage.getItem("PatientName");
+var wsServerIP = "ws://" + IP + ":4141"; 
+//var wsServerIP = "ws://" + "10.12.43.61" + ":4141"; 
+ 
+  //消息推送改进
+ (function () {	
+	window.CHAT = {
+		socket:null,
+
+	usernameSubmit:function(){
+			this.init();
+			return false;
+		},
+		//提交聊天消息内容
+		submit:function(WsContent){
+			
+				var obj = {
+					userid: WsUserId,
+					username: WsUserName,
+					content: WsContent
+				};
+				this.socket.emit('message', obj);
+			return false;
+		},
+		genUid:function(){
+			return new Date().getTime()+""+Math.floor(Math.random()*899+100);
+		},
+		
+		init:function(){		
+			this.socket = io.connect(wsServerIP);
+			
+			//告诉服务器由用户登陆
+			this.socket.emit('login', {userid:WsUserId, username:WsUserName});								
+			
+			//监听消息
+			this.socket.on('message', function(obj){
+			//alert(obj.content);		
+			var DataArry = obj.content.split("||");
+				if (DataArry[0] == TheOtherId)
+				{
+					CreateSMS("Receive", DataArry[1], DataArry[2]);
+					document.getElementById('MainField').scrollTop = document.getElementById('MainField').scrollHeight;
+					SetSMSRead(ThisUserId, TheOtherId);//改写阅读状态
+				}		
+			});
+
+		}
+	};
+})();
+ //************************************
 
 //autogrow初始化
 $("#SMSContent").textinput({
@@ -353,9 +407,9 @@ function submitSMS()
 				{		
 					CreateSMS("Send", GetLatestSMS(TheOtherId, ThisUserId)[4], Content);
 					document.getElementById('SMSContent').value = "";
-					//$('#SMSContent').attr("rows", "1");
 					document.getElementById('MainField').scrollTop = document.getElementById('MainField').scrollHeight;
-					ws.send(ThisUserId + "||" + GetLatestSMS(TheOtherId, ThisUserId)[4] + "||" + Content + "||" + GetLatestSMS(TheOtherId, ThisUserId)[2]);
+					//ws.send(ThisUserId + "||" + GetLatestSMS(TheOtherId, ThisUserId)[4] + "||" + Content + "||" + GetLatestSMS(TheOtherId, ThisUserId)[2]);
+					CHAT.submit(ThisUserId + "||" + GetLatestSMS(TheOtherId, ThisUserId)[4] + "||" + Content + "||" + GetLatestSMS(TheOtherId, ThisUserId)[2]);
 				}
 				else
 				{

@@ -1,6 +1,6 @@
 //实时显示未读消息数
 //********************************************************************
-var ws;
+/*var ws;
 var wsServerIP = serverIP.substring(0, 11) + ":4141/chat"; 
 var SocketCreated = false;
 var isUserloggedout = false;
@@ -81,7 +81,64 @@ function WsPush () //建立连接
 
  function WSonError() {
 	console.log("远程连接中断。", "ERROR");
- };
+ };*/
+
+var SMSCount1 = 0; 
+var SMSCount2 = 0;
+$(document).ready(function(event){
+	Present();
+	CHAT.usernameSubmit();
+})
+
+//************************************
+var WsUserId = window.localStorage.getItem("ID");
+var WsUserName = window.localStorage.getItem("PatientName");
+var wsServerIP = "ws://" + IP + ":4141"; 
+//var wsServerIP = "ws://" + "10.12.43.61" + ":4141"; 
+ 
+  //消息推送改进
+ (function () {	
+	window.CHAT = {
+		socket:null,
+
+	usernameSubmit:function(){
+			this.init();
+			return false;
+		},
+		//提交聊天消息内容
+		submit:function(WsContent){
+			
+				var obj = {
+					userid: WsUserId,
+					username: WsUserName,
+					content: WsContent
+				};
+				this.socket.emit('message', obj);
+			return false;
+		},
+		genUid:function(){
+			return new Date().getTime()+""+Math.floor(Math.random()*899+100);
+		},
+		
+		init:function(){		
+			this.socket = io.connect(wsServerIP);
+			
+			//告诉服务器有用户登陆
+			this.socket.emit('login', {userid:WsUserId, username:WsUserName});								
+			
+			//监听消息
+			this.socket.on('message', function(obj){
+				var DataArry = obj.content.split("||");				
+				if (DataArry[0] == window.localStorage.getItem("DoctorId"))
+				{
+					Present();			
+				}		
+			});
+		}
+	};
+})();
+ //************************************
+
 
 //显示未读消息数
 function Present ()
