@@ -18,6 +18,7 @@
     <script type="text/javascript" src="js/amstock.js"></script>
     <script type="text/javascript" src="js/CommonUtility.js"></script>
     <script type="text/javascript" src="js/SMSsocket.io.js"></script> 
+	<script type="text/javascript" src="cordova.js"></script> 
 
 </head>
 
@@ -202,8 +203,7 @@
 	var StartDate=0;
     var EndDate=0;
 	var NowPlanNo="";
-	var StartDate_detail=0;
-  
+	var StartDate_detail=0;  
   $(document).ready(function(){  
 	    PatientId = localStorage.getItem("ID");  //获取传递的参数
 	    Module = localStorage.getItem("Module");

@@ -129,9 +129,10 @@ var wsServerIP = "ws://" + IP + ":4141";
 			//监听消息
 			this.socket.on('message', function(obj){
 				var DataArry = obj.content.split("||");				
-				if (DataArry[0] == window.localStorage.getItem("DoctorId"))
+				if (DataArry[0] == window.localStorage.getItem("ID"))
 				{
-					Present();			
+					Present();		
+					playBeep();	
 				}		
 			});
 		}
@@ -199,5 +200,11 @@ function GetSMSCountForOne (Reciever, SendBy)
 		});
 	return ret;
 }
+
+// 蜂鸣一次，震动1秒
+function playBeep() { 
+    navigator.notification.beep(1); 
+	navigator.notification.vibrate(1000);
+} 
 //***************************************************************************************
 
