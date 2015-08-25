@@ -244,11 +244,12 @@ var wsServerIP = "ws://" + IP + ":4141";
 			this.socket.on('message', function(obj){
 			//alert(obj.content);		
 			var DataArry = obj.content.split("||");
-				if (DataArry[0] == TheOtherId)
+				if (DataArry[0] == ThisUserId)
 				{
 					CreateSMS("Receive", DataArry[1], DataArry[2]);
 					document.getElementById('MainField').scrollTop = document.getElementById('MainField').scrollHeight;
 					SetSMSRead(ThisUserId, TheOtherId);//改写阅读状态
+					playBeep();
 				}		
 			});
 
@@ -409,7 +410,7 @@ function submitSMS()
 					document.getElementById('SMSContent').value = "";
 					document.getElementById('MainField').scrollTop = document.getElementById('MainField').scrollHeight;
 					//ws.send(ThisUserId + "||" + GetLatestSMS(TheOtherId, ThisUserId)[4] + "||" + Content + "||" + GetLatestSMS(TheOtherId, ThisUserId)[2]);
-					CHAT.submit(ThisUserId + "||" + GetLatestSMS(TheOtherId, ThisUserId)[4] + "||" + Content + "||" + GetLatestSMS(TheOtherId, ThisUserId)[2]);
+					CHAT.submit(TheOtherId + "||" + GetLatestSMS(TheOtherId, ThisUserId)[4] + "||" + Content + "||" + GetLatestSMS(TheOtherId, ThisUserId)[2] + "||" + ThisUserId);
 				}
 				else
 				{
@@ -649,3 +650,9 @@ function SetSMSRead (Reciever, SendBy)
 	}
   });
 }
+
+// 蜂鸣一次，震动1秒
+function playBeep() { 
+    navigator.notification.beep(1); 
+	navigator.notification.vibrate(1000);
+} 
