@@ -1,18 +1,49 @@
 var SBP = "";
 var DBP = "";
+var Hyper1 = "";
+var Harvard1 = "";
+var Framingham1 = "";
+var Stroke1 = "";
+var Heart1 = "";
 var PatientId=localStorage.getItem('PatientId');
+
 $(document).ready(function () {
 	  GetCurrentSBP();
 	  GetCurrentDBP();
-
-/*	  SBPBar($('#TextInput1').val(), $('#TextInput3').val(), SBPlist, chart_SBP_1);
-	  DBPBar($('#TextInput2').val(), $('#TextInput4').val(), DBPlist, chart_DBP_1);
-	  Risk();*/
-
-	   setTimeout(function(){
-		  Risk();
-		  },200); 
-  });  
+	  GetRiskResult(PatientId);
+	  PresentRiskResult(Hyper1, "Hyper");
+	  PresentRiskResult(Harvard1, "Harvard");
+	  PresentRiskResult(Framingham1, "Framingham");
+	  PresentRiskResult(Stroke1, "Strokee");
+	  PresentRiskResult(Heart1, "Heart");
+  });
+  
+  
+   //获取创建计划中最新一次的评估结果
+   function GetRiskResult(PatientId)
+   {
+	  var option;
+		  $.ajax({  
+			  type: "POST",
+			  dataType: "xml",
+			  timeout: 30000,  
+			  url: 'http://'+ serverIP +'/'+serviceName+'/GetRiskResult',
+			  async:false,
+			  data: {UserId:PatientId},//输入变量
+			  beforeSend: function(){},
+			  success: function(result) { 
+				  option=$(result).text();
+    			  Hyper1 =  option.slice(0,6);
+				  Harvard1 = option.slice(8,14);
+				  Framingham1 =  option.slice(16,22);
+				  Stroke1 = option.slice(24,30);
+				  Heart1 =  option.slice(32,38);
+			  }, 
+			  error: function(msg) {alert("GetRiskResult Error");}
+		  });
+		  return option;	 
+   } 
+   
   //从数据库中读取用户当前收缩压值
   function GetCurrentSBP(){
       var option = "";
@@ -36,6 +67,7 @@ $(document).ready(function () {
 	  });
       return option;	
   }	 
+  
   //从数据库中读取用户当前舒张压值
   function GetCurrentDBP(){
 	  var option;
@@ -58,8 +90,46 @@ $(document).ready(function () {
 	  });
 	  return option;	
   } 
+  
+  //将风险评估计算结果显示在界面上
+function PresentRiskResult(No, id)
+{
+	if (isNaN(No))
+	{
+		$('#' + id).parent().css("background-color", "white");
+	}
+	if (!(isNaN(No)))
+	{
+		var NewNo = (No*100).toFixed(2);
+		var color;
+		if (NewNo <= 5)
+		{
+			color = "#2ACA58";
+		}
+		else if (NewNo <= 15)
+		{
+			color = "#D4CC11";
+			
+		}
+		else if (NewNo <= 25)
+		{
+			color = "#ECA319";
+		}
+		else if (NewNo <= 35)
+		{
+			color = "#FF7F50";
+		}
+		else
+		{
+			color = "#EC4319";
+		}
+		$('#' + id).parent().css("background-color", color);
+		var Str = NewNo.toString() + "%";
+		$('#' + id).html(Str);
+	}
+}
    
- 
+/* 
 //页面加载后生成风险评估图
 function Risk()
 {
@@ -581,132 +651,9 @@ function Risk()
 			   RiskBar(Hyper,Harvard,Framingham,Stroke,Heart, Hyper1,Harvard1,Framingham1,Stroke1,Heart1);
           	}, 
             error: function(msg) {alert("RiskInput");}
-   });
-   //获取创建计划中最新一次的评估结果
-   function GetRiskResult(PatientId)
-   {
-	  var option;
-		  $.ajax({  
-			  type: "POST",
-			  dataType: "xml",
-			  timeout: 30000,  
-			  url: 'http://'+ serverIP +'/'+serviceName+'/GetRiskResult',
-			  async:false,
-			  data: {UserId:PatientId},//输入变量
-			  beforeSend: function(){},
-			  success: function(result) { 
-				  option=$(result).text();
-    			  Hyper1 =  option.slice(0,6);
-				  Harvard1 = option.slice(8,14);
-				  Framingham1 =  option.slice(16,22);
-				  Stroke1 = option.slice(24,30);
-				  Heart1 =  option.slice(32,38);
-			  }, 
-			  error: function(msg) {alert("GetRiskResult Error");}
-		  });
-		  return option;	 
-   }
+   });*/
    
-      //画柱状图
-      function RiskBar(Hyper,Harvard,Framingham,Stroke,Heart, Hyper1,Harvard1,Framingham1,Stroke1,Heart1)
-    {
-	  //alert(Hyper);
-	  Hyper=Hyper*100;
-	  Harvard=Harvard*100;
-	  Framingham=Framingham*100;
-	  Stroke=Stroke*100;
-	  Heart=Heart*100;
-	  Hyper1=Hyper1*100;
-	  Harvard1=Harvard1*100;
-	  Framingham1=Framingham1*100;
-	  Stroke1=Stroke1*100;
-	  Heart1=Heart1*100;
-	  var chartData = [
-                {
-                    "year": "高血压发病率",
-                    "计划初始": Hyper1,
-                    "当前": Hyper.toFixed(2)
-                },
-                {
-                    "year": "五年死亡率",
-                    "计划初始": Harvard1,
-                    "当前": Harvard.toFixed(2)
-                },
-                {
-                    "year": "心血管疾病",
-                    "计划初始": Framingham1,
-                    "当前": Framingham.toFixed(2)
-                },
-                {
-                    "year": "中风发病率",
-                    "计划初始": Stroke1,
-                    "当前": Stroke.toFixed(2)
-                },
-                {
-                    "year": "心衰发病率",
-                    "计划初始": Heart1,
-                    "当前": Heart.toFixed(2)
-                }
-            ];
-                // SERIAL CHART
-                chart = new AmCharts.AmSerialChart();
-                chart.dataProvider = chartData;
-                chart.categoryField = "year";
-				
-                chart.startDuration = 0;
-                chart.plotAreaBorderColor = "#DADADA";
-                chart.plotAreaBorderAlpha = 1;
-                // this single line makes the chart a bar chart
-                chart.rotate = false;
-
-                // AXES
-                // Category
-                var categoryAxis = chart.categoryAxis;
-                categoryAxis.gridPosition = "start";
-                categoryAxis.gridAlpha = 0;
-                categoryAxis.axisAlpha = 0;
-				categoryAxis.labelRotation = 60;
-                // Value
-                var valueAxis = new AmCharts.ValueAxis();
-                valueAxis.axisAlpha = 0;
-                valueAxis.gridAlpha = 0;
-				valueAxis.title="概率/%";
-                valueAxis.position = "bottom";
-                chart.addValueAxis(valueAxis);
-
-                // GRAPHS
-                // first graph
-                var graph1 = new AmCharts.AmGraph();
-                graph1.type = "column";
-                graph1.title = "计划初始";
-                graph1.valueField = "计划初始";
-                graph1.balloonText = "计划初始:[[value]]";
-                graph1.lineAlpha = 0;
-                graph1.fillColors = "#ADD981";
-                graph1.fillAlphas = 1;
-                chart.addGraph(graph1);
-
-                // second graph
-                var graph2 = new AmCharts.AmGraph();
-                graph2.type = "column";
-                graph2.title = "当前";
-                graph2.valueField = "当前";
-                graph2.balloonText = "当前:[[value]]";
-                graph2.lineAlpha = 0;
-                graph2.fillColors = "#81acd9";
-                graph2.fillAlphas = 1;
-                chart.addGraph(graph2);
-
-                // LEGEND
-                var legend = new AmCharts.AmLegend();
-                chart.addLegend(legend);
-
-                chart.creditsPosition = "top-right";
-
-                // WRITE
-                chart.write("chartdiv3");
-				//alert(Hyper);	
-      }
-}	  
+  
+	  
 
    
