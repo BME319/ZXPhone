@@ -1,7 +1,8 @@
 ﻿/**********************全局变量************************/
  var UserId = window.localStorage.getItem("ID");
  //var ImageAddressIP = window.localStorage.getItem("IPAddress");
- var ImageAddressIP = "http://10.13.22.66:8088";  //webserviceIP
+ //var ImageAddressIP = "http://10.13.22.66:8088";  //webserviceIP
+ var ImageAddressIP = "http://121.43.107.106:8088";  //webserviceIP
  window.localStorage.setItem("PatientFile", "/PersonalPhoto");
  var ImageAddressFile = window.localStorage.getItem("PatientFile");
  var pictureSource;   // picture source
