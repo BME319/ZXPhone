@@ -16,12 +16,36 @@
     <script type="text/javascript" src="js/CommonUtility.js"></script>
     <script type="text/javascript" src="js/TaskMenu.js"></script>
     <script type="text/javascript" src="js/SMSsocket.io.js"></script> 
-    <script type="text/javascript" src="cordova.js"></script> 
+    <script type="text/javascript" src="js/touchwipe.js"></script> 
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/Local-Notification.js">
     <title>任务一览</title>
     
+    
+        <script>
+            $(document).on("taphold","#tasklist",function(){
+             // alert($(this).text());
+              var str=$(this).html();
+              var title=str.slice(str.indexOf("<h2>")+4,str.indexOf("</h2>"));
+              var text='';
+              if(str.indexOf(";并")!=-1)
+              {text=str.slice(str.indexOf(";并")+1,str.indexOf("</p>"));}
+              else{text='';}
+              //alert(title+','+text);
+              ;
+              $("#title").val(title);
+              $("#text").val(text);
+              $("#addnew").click();
+                });                       
+            $(document).on("pageshow","#showallm",function(){getstorage();});
+            $(document).ready(function(){
+                swipeud();            
+            });
+        </script>
 </head>
 
 <body>
+    <div data-role="page" id="main">
     <div>
     	<div data-role="header"  data-position="fixed">
             <div id="imgtest-round" style="margin-left:10px;width:40px;height:40px;border-radius:100px;border:2px solid #fff;overflow:hidden;-webkit-box-shadow:0 0 3px #ccc;box-shadow:0 0 3px #ccc;" onclick="$('#Info').panel('open')">
@@ -68,6 +92,7 @@
             	<button onclick = "javascript: window.location.href='BasicInfo.html'" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-user">
                 	个人信息
                 </button>
+                <a href="#showallm" onclick=""  data-role="button" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-plus">所有提醒</a>
                 <button onclick = "" data-rel="close" class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-cloud">
                 	账号绑定
                 </button>
@@ -90,9 +115,15 @@
                 <img src="img/HealthEducation.png">
             <h2>健康教育</h2>
             <p>点击观看教学视频</p></a>
-                <a href="#" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-btn-icon-notext ui-icon-edit ui-btn-a" style="background-color:#FFFFFF"></a>
+                <a href="HrefName" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-btn-icon-notext ui-icon-edit ui-btn-a" style="background-color:#FFFFFF"></a>
             </li>
         </ul>
+
+            <div data-role="popup" id="morechoose" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
+                <h2>更多...</h2>
+                <a id='addnew' href="#addpushm" onclick="time_pick('load')"  data-role="button" data-rel="dialog" data-icon="plus">添加提醒</a>
+            </div>
+
         <div data-role="popup" id="TaskDone" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px; padding-bottom:2em;">
             <h3>任务完成确认</h3>
         	<p>您确定已经完成该项任务吗？</p>
@@ -121,6 +152,72 @@
             </ul>
         </div><!-- /navbar -->
 	</div>
+    </div>
+    <div data-role="page" id="showallm">
+        <div data-role="header" data-position="fixed">
+            <h1>事件提醒</h1>
+            <a href="#main"data-role="button" class="ui-btn-left"data-icon="back" >返回</a>
+            <a href="#addpushm" onclick="time_pick('load')"  data-role="button" class="ui-btn-right" data-rel="dialog" data-icon="plus">添加</a>
+        </div>
+            <ul data-role="listview" id="showmpush"></ul>
+        <div data-role="footer" data-position="fixed">
+            <div><h3> </h3>
+             <!--   <button onclick="test()"></button>
+                <a href="#pagetwo" onclick="time_pick('load')" class="ui-btn ui-shadow" data-rel="dialog" data-icon="plus">添加提醒</a> -->
+            </div>
+        </div>
+    </div>
+     <div data-role="page" id="addpushm" data-close-btn="none">
+        <div data-role="header">
+          <h1>添加新提醒</h1>
+        </div>
+        
+        <div data-role="content">
+            <form action=""id="setm">
+                <div data-role="fieldcontain">
+                    <label for="title">名称：</label>
+                    <input type="text" name="title" id="title">       
+                    <label for="text">内容：</label>
+                    <textarea name="text" id="text"></textarea>
+                </div>
+               
+                <div data-role="content" class="ui-grid-c center">
+                    <div class="ui-block-a"></div>
+                    <div class="ui-block-b" id="sethour">
+                        <a href="#" id="h_up" onclick="time_pick('h_up')" class="ui-shadow ui-btn ui-corner-all ui-mini ui-btn-icon-top ui-icon-carat-u"></a>
+                        <span style="text-align: center;" >
+                            <div class="ui-grid-a">
+                            <div class="ui-block-a"> <h2 id="hour">0</h2></div>
+                            <div class="ui-block-b"> <h2 >时</h2></div>
+                            </div>
+                        </span>
+                        <a href="#" id="h_down" onclick="time_pick('h_down')" class="ui-shadow ui-btn ui-corner-all ui-mini ui-btn-icon-top ui-icon-carat-d"></a>
+                    </div>
+                    <div class="ui-block-c" id="setminute">
+                        <a href="#" id="m_up" onclick="time_pick('m_up')" class="ui-shadow ui-btn ui-corner-all ui-mini ui-btn-icon-top ui-icon-carat-u"></a>
+                        <span style="text-align: center;">
+                            <div class="ui-grid-a">
+                            <div class="ui-block-a"> <h2 id="minute">0</h2></div>
+                            <div class="ui-block-b"> <h2 >分</h2></div>
+                            </div>
+                        </span>
+                        <a href="#" id="m_down" onclick="time_pick('m_down') "class="ui-shadow ui-btn ui-corner-all ui-mini ui-btn-icon-top ui-icon-carat-d"></a>
+                    </div>
+                    <div class="ui-block-d"></div>
+                </div>
+             <a href='#main' id="pback"></a><!-- onclick="setnewmpush()"class="ui-shadow ui-btn ui-corner-all">序列化表单值</a><-->
+           <div class="ui-grid-a">
+               <div class="ui-block-a">
+           <input type="button" onclick="setnewmpush()" value="添加"></div>
+           <div  class="ui-block-b">
+           <input type="button" onclick="$('#pback').click()" value="取消"></div>
+           </div>
+          <!-- <input type="button" onclick="clearform()" value="clear">-->
+            </form>
+            <div id="results"></div>
+        </div>
+    </div>
+<!--mzb test-->    
 </body>
 
 <script type="text/javascript">
