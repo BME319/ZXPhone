@@ -18,13 +18,13 @@
     <script type="text/javascript" src="js/SMSsocket.io.js"></script> 
     <script type="text/javascript" src="js/touchwipe.js"></script> 
     <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="js/Local-Notification.js">
+    <script type="text/javascript" src="js/Local-Notification.js"></script>
     <title>任务一览</title>
     
     
         <script>
             $(document).on("taphold","#tasklist",function(){
-             // alert($(this).text());
+              //alert($(this).text());
               var str=$(this).html();
               var title=str.slice(str.indexOf("<h2>")+4,str.indexOf("</h2>"));
               var text='';

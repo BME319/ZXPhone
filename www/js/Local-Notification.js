@@ -19,7 +19,7 @@
     x=$("form").serializeArray();
      
     $.each(x, function(i, field){
-      $("#results").append(field.name + ":" + field.value + " ");
+      //$("#results").append(field.name + ":" + field.value + " ");
       switch(field.name)
       {
           case "title" :mvalue.title=field.value;break;
