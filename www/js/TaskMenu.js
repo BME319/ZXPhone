@@ -232,7 +232,7 @@
 							IconStyle = 'ui-icon-check';
 							break;
 					}
-					var task_str = '<li><a href="' + HrefName + '" style="background-color:' + ColorName_1 + '"><img src="' + 'img/' + TaskType + '.png' + '"><h2>'+ TaskName+ '</h2><p>' + Instruction.replace(/，/,"&nbsp") + '</p></a>' + '<a href="' + DoneFlag + '" data-rel="popup" ' + 'style="background-color:' + ColorName_2 + '" class="ui-btn ui-btn-icon-notext ' + IconStyle + ' ui-btn-a"' + ' data-position-to="window" data-transition="pop"' + ' onclick="GetId(this)"' + ' id="' + TaskId  + '">' +'</a></li>';
+					var task_str = '<li  id="tasklist"><a href="' + HrefName + '" style="background-color:' + ColorName_1 + '"><img src="' + 'img/' + TaskType + '.png' + '"><h2>'+ TaskName+ '</h2><p>' + Instruction.replace(/，/,"&nbsp") + '</p></a>' + '<a href="' + DoneFlag + '" data-rel="popup" ' + 'style="background-color:' + ColorName_2 + '" class="ui-btn ui-btn-icon-notext ' + IconStyle + ' ui-btn-a"' + ' data-position-to="window" data-transition="pop"' + ' onclick="GetId(this)"' + ' id="' + TaskId  + '">' +'</a></li>';
 					$("#TaskList").append(task_str);
 					}
 				})
