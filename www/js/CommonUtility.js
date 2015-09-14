@@ -3,10 +3,10 @@
  //var serverIP = '10.12.43.101:8088';
  //var serverIP = '10.12.43.103:8085';
   //var serverIP = '10.12.43.63:8088';
- //var serverIP = '10.12.43.66:8088';
+ //var serverIP = '121.43.107.106:8088';
  //var serverIP = '10.13.22.66:8088';
- //var IP = "10.12.43.67";
  var IP = "121.43.107.106";
+ //var IP = "121.43.107.106";
  var Port = "8088";
  var serverIP = IP + ":" + Port;
  var serviceName = 'Services.asmx';

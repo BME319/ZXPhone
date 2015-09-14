@@ -163,7 +163,7 @@ function showDetailInfo(event)
         dataType: "json",
 		//timeout: 30000,  
 	url: 'http://'+ serverIP +'/'+serviceName+'/GetImplementationByDate',
-		//async:false,
+		async:false,
         data: {PatientId:PatientId, 
 		        PlanNo:NowPlanNo,
 				DateSelected:theDate

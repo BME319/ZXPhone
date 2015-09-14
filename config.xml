@@ -8,6 +8,6 @@
         ZJUBME319
     </author>
     <content src="Loading-Phone.html" />   
-        <preference name="Fullscreen" value="true" />
+        <preference name="Fullscreen" value="false" />
     <access origin="*" />
 </widget>

@@ -1,8 +1,8 @@
 ﻿/**********************全局变量************************/
  var UserId = window.localStorage.getItem("ID");
  //var ImageAddressIP = window.localStorage.getItem("IPAddress");
- //var ImageAddressIP = "http://10.13.22.66:8088";  //webserviceIP
  var ImageAddressIP = "http://121.43.107.106:8088";  //webserviceIP
+ //var ImageAddressIP = "http://121.43.107.106:8088";  //webserviceIP
  window.localStorage.setItem("PatientFile", "/PersonalPhoto");
  var ImageAddressFile = window.localStorage.getItem("PatientFile");
  var pictureSource;   // picture source
@@ -604,7 +604,7 @@ function onPhotoDataSuccess(imageData) {
   Photo.style.width = '100px';
   Photo.style.height = '100px';
   Photo.src = imageURI;
-  
+  //alert(imageURI);
   uploadPhoto(imageURI);
 }
 
@@ -617,7 +617,7 @@ function onPhotoURISuccess(imageURI) {
   Photo.style.width = '100px';
   Photo.style.height = '100px';
   Photo.src = imageURI;
-  
+  //alert(imageURI);
   uploadPhoto(imageURI);
 }
 
@@ -654,7 +654,10 @@ function uploadPhoto(imageURI) {
 	options.params = params;
 	var ft = new FileTransfer();
 	var URI = ImageAddressIP + '/'+ "upload.php";
+	//alert(imageURI);
+	//alert(URI);
 	ft.upload(imageURI, URI, win, fail, options);
+	//alert(imageURI);
 }
 
 function win(r) {
