@@ -246,6 +246,7 @@
 				var extraInfo = cordova.require('cn.edu.zju.bme319.cordova.ExtraInfo');
 				
 				$(document).on("click","#TestBT",function(){
+					
 					extraInfo.isBTEnabled(null,
 					function(r){
 						//printResult2(r);

@@ -1,7 +1,7 @@
 ﻿	var PatientURL;
 	var DoctorURL;
-	//var ImageAddressIP = "http://10.13.22.66:8088"; 
 	var ImageAddressIP = "http://121.43.107.106:8088"; 
+	//var ImageAddressIP = "http://121.43.107.106:8088"; 
 
 
 	function GetPatientName(PID){
@@ -274,6 +274,7 @@
 	function GetModule(PID){
 		window.localStorage.setItem("Module","M1");
 		window.localStorage.setItem("IPAddress", "http://121.43.107.106:8088");
+		//window.localStorage.setItem("IPAddress", "http://121.43.107.106:8088");
 		window.localStorage.setItem("PatientFile", "/PersonalPhoto");
 		window.localStorage.setItem("DoctorFile", "/PersonalPhoto");
 		PatientURL = ImageAddressIP+window.localStorage.getItem("PatientFile")+"/";
