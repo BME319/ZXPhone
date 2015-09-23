@@ -49,7 +49,8 @@ document.addEventListener('deviceready', function () {
 			}
 			else if (r == "error")
 			{
-				alert("状态获取失败");	
+				document.getElementById("alert2").innerHTML = "状态获取失败";	
+				$( "#popdiv2" ).popup( "open" )
 			}
 			//printResult2(r);
 			
@@ -90,7 +91,9 @@ document.addEventListener('deviceready', function () {
 						}
 						else
 						{
-							alert("打开蓝牙失败");	
+							//alert("打开蓝牙失败");	
+							document.getElementById("alert2").innerHTML = "打开蓝牙失败";	
+							$( "#popdiv2" ).popup( "open" )
 						}
 				},5000);
 				//while(r=="")
@@ -156,7 +159,9 @@ document.addEventListener('deviceready', function () {
 				}
 				else
 				{
-					alert("关闭蓝牙失败");	
+					//alert("关闭蓝牙失败");	
+					document.getElementById("alert2").innerHTML = "关闭蓝牙失败";	
+					$( "#popdiv2" ).popup( "open" )
 				}
 			},
 			function(e){log(e)}
@@ -208,20 +213,25 @@ document.addEventListener('deviceready', function () {
 										var name = ss[3+i*12];
 										var add = ss[7+i*12];
 										//alert(name);
-										
+										if (name == "finltop")
+										{
+											name = "脉搏波血压计";
+										}
 										//$("#DeviceList").append("<p id='"  + add + "' onclick = 'connect()'>" + name + "</p>");
-										$("#Devicelist1").append("<p id='"  + add + "' class = 'devicelist' style = 'text-align: left'>" + name + "</p>");	
 										
+										$("#Devicelist1").append("<a id='"  + add + "' class = 'devicelist1'  data-role = 'button' style = 'text-align: left' value = " +name+ ">" + name + "</a>");
 									}
 									
-									//$(".devicelist").click(function ()
-//									{
-//										console.log(this);
-//										var Add = $(this).attr("id");
-//																
-//							
-//										connect(Add);	 
-//									 });
+									$(".devicelist1").click(function ()
+									{
+										console.log(this);
+										var Add = $(this).attr("id");
+										//alert(Add);
+										document.getElementById("alert3").value =  Add;
+										document.getElementById("alert3").style.display = "none";
+										$("#popdiv1").popup("open");
+										 
+									 });
 									$("#DeviceList1").trigger("create");
 								}
 								},
@@ -279,13 +289,16 @@ function ListDevice() {
 						var name = ss[3+i*12];
 						var add = ss[7+i*12];
 						//alert(name);
-						
+						if (name == "finltop")
+						{
+							name = "脉搏波血压计";
+						}
 						//$("#DeviceList").append("<p id='"  + add + "' onclick = 'connect()'>" + name + "</p>");
-						$("#Devicelist2").append("<a id='"  + add + "' class = 'devicelist'  data-role = 'button' style = 'text-align: left' value = " +name+ ">" + name + "</a>");	
+						$("#Devicelist2").append("<a id='"  + add + "' class = 'devicelist2'  data-role = 'button' style = 'text-align: left' value = " +name+ ">" + name + "</a>");	
 						
 					}
 					
-					$(".devicelist").click(function ()
+					$(".devicelist2").click(function ()
 					{
 						console.log(this);
 						var Add = $(this).attr("id");
@@ -293,11 +306,22 @@ function ListDevice() {
 						//alert(Name);
 						pair(Add);	 
 						setTimeout(function(){
+							ListBoundDevice();
 							//alert(1);
-							$("#Devicelist1").append("<p id='"  + Add + "' class = 'devicelist' style = 'text-align: left'>" + Name + "</p>");
-							$("#DeviceList1").trigger("create");
+							//$("#Devicelist1").append("<p id='"  + add + "' class = 'devicelist1' data-role = 'button' style = 'text-align: left'>" + Name + "</p>");
+//							$(".devicelist1").click(function ()
+//							{
+//								console.log(this);
+//								var Add = $(this).attr("id");
+//								document.getElementById("alertAdd").innerHTML = Add;
+//								$("#popup1").popup("open");
+//								$(document).on("click","#unpair",function (){
+//									unpair(Add);
+//								});		 
+//							 });
+//							$("#DeviceList1").trigger("create");
 							//alert(r);	
-						},1500);
+						},5000);
 					 });
 					$("#DeviceList2").trigger("create");
 				}
@@ -325,5 +349,47 @@ function ListDevice() {
 //			},3000);
 		},
 		function(e){log(e)}
+		);
+	}
+	
+	function unpair() {
+		var extraInfo = cordova.require('cn.edu.zju.bme319.cordova.ExtraInfo');
+		var add = $("#alert3").val();
+		//alert(add);
+		extraInfo.unPairBT(add,
+		function(r){
+			//alert(r);
+			if (r == true)
+			{
+				$("#add").remove();
+				$("#DeviceList1").trigger("create");	
+			}
+			setTimeout(function(){
+				$( "#popdiv1" ).on({
+				popupafterclose: function() {
+					setTimeout(function() { 
+					  document.getElementById("alert2").innerHTML = "解除配对成功";						
+					  $( "#popdiv2" ).popup( "open" ) 
+					//resetBT();
+					}, 100 );
+				}
+			});	
+			$("#popdiv1").popup("close");
+			},3000);
+			
+		},
+		function(e){
+			log(e);
+			$( "#popdiv1" ).on({
+				popupafterclose: function() {
+					setTimeout(function() { 
+					  document.getElementById("alert2").innerHTML = "解除配对失败";						
+					  $( "#popdiv2" ).popup( "open" ) 
+					//resetBT();
+					}, 100 );
+				}
+			});	
+			$("#popdiv1").popup("close");
+		}
 		);
 	}
