@@ -27,19 +27,39 @@
               //alert($(this).text());
               var str=$(this).html();
               var title=str.slice(str.indexOf("<h2>")+4,str.indexOf("</h2>"));
-              var text='';
-              if(str.indexOf(";并")!=-1)
-              {text=str.slice(str.indexOf(";并")+1,str.indexOf("</p>"));}
-              else{text='';}
+              var text=str.slice(str.indexOf("<p>")+4,str.indexOf("</p>"));;
+              //if(str.indexOf(";并")!=-1)
+              //{text=str.slice(str.indexOf(";并")+1,str.indexOf("</p>"));}
+             // else{text='';}
               //alert(title+','+text);
               ;
               $("#title").val(title);
-              $("#text").val(text);
+              //$("#text").val(text);
               $("#addnew").click();
                 });                       
             $(document).on("pageshow","#showallm",function(){getstorage();});
             $(document).ready(function(){
                 swipeud();            
+            });
+            $(document).on("tap","#chooseday",function(){
+                //alert('chooseday');
+                var c=document.getElementsByName('chooseday');
+                var str='';
+                var day=new Array();
+                var count=0;
+                day[0]='周一';day[1]='周二';day[2]='周三';day[3]='周四';
+                day[4]='周五';day[5]='周六';day[6]='周日';
+                for(var i=0;i<c.length;i++)
+                {
+                    if(c[i].checked)
+                    {
+                        count++;
+                        str =str+ day[i]+' ';
+                    }
+                }
+                if(count==7)str='每天';
+                if(count==0)str='一次';
+                $('#showchoose').text('周期 '+str);
             });
         </script>
 </head>
@@ -205,10 +225,29 @@
                     </div>
                     <div class="ui-block-d"></div>
                 </div>
+               <fieldset id='chooseday' data-role="collapsible" data-inset="false">
+                    <legend ><span id="showchoose">周期 每天</span></legend>
+                    <div data-role="controlgroup">
+                    <label for="mon">星期一</label>
+                    <input type="checkbox" name="chooseday" id="mon" value="mon" checked="checked">
+                    <label for="tue">星期二</label>
+                    <input type="checkbox" name="chooseday" id="tue" value="tue" checked="checked">
+                    <label for="wen">星期三</label>
+                    <input type="checkbox" name="chooseday" id="wen" value="wen" checked="checked">
+                    <label for="thu">星期四</label>
+                    <input type="checkbox" name="chooseday" id="thu" value="thu" checked="checked">
+                    <label for="fri">星期五</label>
+                    <input type="checkbox" name="chooseday" id="fri" value="fri" checked="checked">
+                    <label for="sat">星期六</label>
+                    <input type="checkbox" name="chooseday" id="sat" value="sat" checked="checked">
+                    <label for="sun">星期日</label>
+                    <input type="checkbox" name="chooseday" id="sun" value="sun" checked="checked">
+                    </div>
+                </fieldset>
              <a href='#main' id="pback"></a><!-- onclick="setnewmpush()"class="ui-shadow ui-btn ui-corner-all">序列化表单值</a><-->
            <div class="ui-grid-a">
                <div class="ui-block-a">
-           <input type="button" onclick="setnewmpush()" value="添加"></div>
+           <input type="button" onclick="updatem()" value="添加"></div>
            <div  class="ui-block-b">
            <input type="button" onclick="$('#pback').click()" value="取消"></div>
            </div>
@@ -244,6 +283,7 @@
 		$("#PatientPhoto").attr("src", window.localStorage.getItem("PatientPhoto"));
 		GetDateTimebyNow();
 		GetTaskListbyStatus(2);
+        GetPlanDeadline(_PlanNo);
 	})
 </script>
 <script type="text/javascript" src="js/SMS_Count.js"></script>

@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.workspace.xPhone" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>xPhone</name>
+<widget id="com.workspace.xPhone" version="0.1.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>慢病管理</name>
     <description>
-        CDMIS app
+        CDMIS app1
     </description>
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         ZJUBME319

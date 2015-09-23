@@ -328,7 +328,10 @@
 										var name = ss[3+i*12];
 										var add = ss[7+i*12];
 										//alert(name);
-										
+										if (name == "finltop")
+										{
+											name = "脉搏波血压计";	
+										}
 										//$("#DeviceList").append("<p id='"  + add + "' onclick = 'connect()'>" + name + "</p>");
 										$("#DeviceList").append("<a id='"  + add + "' class = 'devicelist' data-role = 'button'>" + name + "</a>");	
 										
@@ -569,11 +572,12 @@
 				//var htmlText="<ul><li>GetData: "+resultado+"</li></ul>";
 //				   document.getElementById("result").innerHTML=htmlText;
 				   var temp = $("<p>"+ resultado +"</p>");
-					
-				   var results = temp.text().trim().split("|");
-				   var SBP = results[17];
-				   var DBP = results[18];
-				   var PulseF = results[20];
+				   //alert(temp);
+				   var results = temp.text().trim().split(" ");
+				   //alert(results);
+				   var SBP = results[16];
+				   var DBP = results[17];
+				   var PulseF = results[19];
 				   
 				   //var AgainFlag = 0;
 				   if ( isNaN(SBP) == false && isNaN(DBP) == false && isNaN(PulseF) == false)
